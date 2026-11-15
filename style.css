@@ -273,8 +273,9 @@ a { color: inherit; }
   /* Phones peek up from the bottom edge of the card */
   .bento .device { transition: transform .35s ease; }
   .bento .slide:hover .device { transform: translateY(-8px); }
-  /* phones peek up from the bottom edge; top of each device sits ~144px down */
-  .bento .phone { width: 240px; margin: auto auto -118px; }
+  /* phones peek up from the bottom edge; top of each device sits ~165px down,
+     clear of the label + title + description */
+  .bento .phone { width: 228px; margin: auto auto -115px; }
 
   /* Wide cards: text on the left, device on the right */
   .bento .b-ct, .bento .b-ds { flex-direction: row; gap: 40px; }
@@ -299,8 +300,8 @@ a { color: inherit; }
   .bento .b-wa { padding-bottom: 0; } /* watch runs off the bottom edge, like the phones */
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
-    width: auto; height: 420px; aspect-ratio: 600 / 940;
-    flex: 0 1 auto; min-height: 0; margin: auto auto -48px; /* top lines up with the phones beside it; strap runs off the edge */
+    width: auto; height: 400px; aspect-ratio: 600 / 940;
+    flex: 0 1 auto; min-height: 0; margin: auto auto -49px; /* top lines up with the phones beside it; strap runs off the edge */
   }
   .bento .b-wa:hover .watch { transform: scale(1.04); }
 
@@ -461,3 +462,16 @@ a { color: inherit; }
   transition: background-color .4s ease, color .4s ease, border-color .4s ease,
               fill .4s ease, stroke .4s ease, box-shadow .4s ease, filter .4s ease !important;
 }
+
+/* "Human made" / "AI assisted" eyebrow label above each project title.
+   Use class="made human" or class="made ai" on the span. */
+.made {
+  display: inline-flex; align-items: center; gap: 5px;
+  font: 600 11px/1 var(--sans); letter-spacing: .07em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 70%, transparent);
+}
+.made svg { width: 13px; height: 13px; flex-shrink: 0; }
+.made.ai { color: #7c3aed; }
+[data-theme="dark"] .made.ai { color: #c4b5fd; }
+.slide-text .made + h3 { margin-top: -6px; }   /* sit the label close to its title */
+.bento .slide-text .made + h3 { margin-top: 2px; }
