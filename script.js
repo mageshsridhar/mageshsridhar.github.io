@@ -1,6 +1,27 @@
 // Footer year
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// Light / dark toggle. A click saves the choice; until then the site follows the system setting.
+(() => {
+  const root = document.documentElement;
+  const btn = document.querySelector(".theme-toggle");
+  const label = () =>
+    btn.setAttribute("aria-label", root.dataset.theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+
+  btn.addEventListener("click", () => {
+    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    label();
+  });
+
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    let saved = null;
+    try { saved = localStorage.getItem("theme"); } catch (err) {}
+    if (!saved) { root.dataset.theme = e.matches ? "dark" : "light"; label(); }
+  });
+  label();
+})();
+
 // Project carousel: arrows, dots, keyboard
 (() => {
   const track = document.querySelector(".track");
