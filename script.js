@@ -47,24 +47,18 @@ document.getElementById("year").textContent = new Date().getFullYear();
   mark();
 })();
 
-// Typewriter in the hero
+// Hero "animations" Lottie (same file as the original Framer site)
 (() => {
-  const el = document.querySelector(".typed");
-  if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const words = el.dataset.words.split("|");
-  let w = 0, i = words[0].length, deleting = true;
-
-  function tick() {
-    const word = words[w];
-    el.textContent = word.slice(0, i) || "​";
-    if (deleting) {
-      i--;
-      if (i < 0) { deleting = false; w = (w + 1) % words.length; i = 0; }
-    } else {
-      i++;
-      if (i > words[w].length) { deleting = true; i = words[w].length; return setTimeout(tick, 2200); }
-    }
-    setTimeout(tick, deleting ? 40 : 80);
-  }
-  setTimeout(tick, 2500);
+  const el = document.getElementById("hero-lottie");
+  if (!el || !window.lottie) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const anim = lottie.loadAnimation({
+    container: el,
+    renderer: "svg",
+    loop: !reduce,
+    autoplay: !reduce,
+    path: "assets/animations.json",
+  });
+  // With reduced motion, show the finished lettering instead of animating
+  if (reduce) anim.addEventListener("DOMLoaded", () => anim.goToAndStop(anim.totalFrames - 1, true));
 })();
