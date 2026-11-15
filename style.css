@@ -282,7 +282,7 @@ a { color: inherit; }
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
     width: auto; height: 313px; aspect-ratio: 600 / 940;
-    flex: 0 1 auto; min-height: 0; margin: auto auto -56px; /* bottom strap cut by the card edge */
+    flex: 0 1 auto; min-height: 0; margin: auto auto -33px; /* top lines up with the phones beside it; strap runs off the edge */
   }
   .bento .b-wa:hover .watch { transform: scale(1.04); }
 
