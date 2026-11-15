@@ -30,7 +30,7 @@
       <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#certifications">Certifications</a>
-      <a href="#hobbies">Hobbies</a>
+      <a href="#hobbies" class="nav-hobbies">Hobbies</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="theme-toggle" type="button" aria-label="Switch to dark mode">
@@ -42,6 +42,7 @@
   <main>
     <section id="hero" class="hero">
       <img class="hero-photo" src="assets/hero.jpg" alt="Portrait of Magesh Sridhar">
+      <div class="hero-text">
       <div class="hero-copy">
         <p class="hero-line">Hello there, I'm <strong>Magesh Sridhar</strong>, an</p>
         <h1>iOS Developer</h1>
@@ -49,7 +50,15 @@
         <p class="hero-line">plus a keen passion for micro</p>
         <div id="hero-lottie" class="hero-lottie" role="img" aria-label="animations and creating fluid user interfaces."></div>
       </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:magesh.sridhar.05@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Email me
+        </a>
+        <a class="btn btn-secondary" href="#projects">See my work</a>
+      </div>
       <svg class="zigzag" viewBox="0 0 246 21" aria-hidden="true"><path d="M 0 14 L 19.917 0 L 39.833 14 L 59.75 0 L 79.667 14 L 99.583 0 L 119.5 14 L 139.417 0 L 159.333 14 L 179.25 0 L 199.167 14 L 219.083 0 L 239 14" transform="translate(3.5 3.5) rotate(180 119.5 7)" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
     </section>
 
     <section id="projects" class="section">
@@ -59,44 +68,44 @@
         <div class="track" tabindex="0">
           <article class="slide">
             <h3>Color Theory</h3>
-            <p>An interactive game that teaches<br>fundamentals of color theory.</p>
+            <p>An interactive game that teaches fundamentals of color theory.</p>
             <img class="badge" src="assets/wwdc-wreath.svg" alt="WWDC21 Swift Student Challenge winner">
             <a class="gh" href="https://github.com/mageshsridhar/ColorTheory" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device phone"><img class="screen" src="assets/color-theory.gif" alt="Color Theory app demo" loading="lazy"><img class="frame" src="assets/iphone-frame.png" alt=""></div>
           </article>
           <article class="slide">
             <h3>Apple Music Lyrics</h3>
-            <p>Progressing style lyrics from Apple Music<br>with added effects recreated using SwiftUI.</p>
+            <p>Progressing style lyrics from Apple Music with added effects recreated using SwiftUI.</p>
             <a class="gh" href="https://github.com/mageshsridhar/Progressing-Lyrics" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device phone"><img class="screen" src="assets/lyrics.gif" alt="Apple Music style lyrics demo" loading="lazy"><img class="frame" src="assets/iphone-frame.png" alt=""></div>
           </article>
           <article class="slide">
             <h3>WatchOS Heart Rate</h3>
-            <p>Heart beat animation from the<br>Heart Rate application in the Apple Watch.</p>
+            <p>Heart beat animation from the Heart Rate application in the Apple Watch.</p>
             <a class="gh" href="https://github.com/mageshsridhar/HeartRateAnimation" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device watch"><img class="screen" src="assets/heart-rate.gif" alt="Heart rate animation demo" loading="lazy"><img class="frame" src="assets/watch-frame.png" alt=""></div>
           </article>
           <article class="slide">
             <h3>Heart Toggle</h3>
-            <p>Custom made heart shaped toggle<br>to mark the favorites.</p>
+            <p>Custom made heart shaped toggle to mark the favorites.</p>
             <a class="gh" href="https://github.com/mageshsridhar/HeartToggle" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device phone"><img class="screen" src="assets/heart-toggle.gif" alt="Heart toggle demo" loading="lazy"><img class="frame" src="assets/iphone-frame.png" alt=""></div>
           </article>
           <article class="slide">
             <h3>Startup Hello</h3>
-            <p>Startup Hello animation from iOS/MacOS<br>recreated using shapes in SwiftUI.</p>
+            <p>Startup Hello animation from iOS/MacOS recreated using shapes in SwiftUI.</p>
             <a class="gh" href="https://github.com/mageshsridhar/HelloStartup" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device phone"><img class="screen" src="assets/hello.gif" alt="Hello animation demo" loading="lazy"><img class="frame" src="assets/iphone-frame.png" alt=""></div>
           </article>
           <article class="slide">
             <h3>Dynamic Scroll Views</h3>
-            <p>Dynamic scroll views changing<br>scroll direction with a fluid animation.</p>
+            <p>Dynamic scroll views changing scroll direction with a fluid animation.</p>
             <a class="gh" href="https://github.com/mageshsridhar/DynamicScroll" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device phone"><img class="screen" src="assets/dynamic-scroll.gif" alt="Dynamic scroll demo" loading="lazy"><img class="frame" src="assets/iphone-frame.png" alt=""></div>
           </article>
           <article class="slide">
             <h3>Music Playlist Card</h3>
-            <p>"Made for you" playlist card with animated<br>mesh gradients recreated using SwiftUI.</p>
+            <p>"Made for you" playlist card with animated mesh gradients recreated using SwiftUI.</p>
             <a class="gh" href="https://github.com/mageshsridhar/Made-For-You-Card" target="_blank" rel="noopener"><img src="assets/github.svg" alt="">Github</a>
             <div class="device phone"><img class="screen" src="assets/made-for-you.gif" alt="Made for you card demo" loading="lazy"><img class="frame" src="assets/iphone-frame.png" alt=""></div>
           </article>
@@ -153,7 +162,13 @@
 
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <p class="contact-lede">Want to chat about iOS, SwiftUI or anything else? Find me here.</p>
+      <p class="contact-lede">Want to chat about iOS, SwiftUI or anything else? Drop me a line.</p>
+      <div class="cta-row contact-cta">
+        <a class="btn btn-primary" href="mailto:magesh.sridhar.05@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          magesh.sridhar.05@gmail.com
+        </a>
+      </div>
       <div class="socials">
         <a href="https://www.linkedin.com/in/mageshsridhar/" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/linkedin.svg" alt=""></a>
         <a href="https://github.com/mageshsridhar" target="_blank" rel="noopener" aria-label="GitHub" class="gh-social"><img src="assets/github.svg" alt=""></a>
