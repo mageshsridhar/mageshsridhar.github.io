@@ -278,11 +278,11 @@ a { color: inherit; }
   .b-ct p { font-size: 16px; }
 
   /* Watch card: tall, whole watch shown below the text */
-  .bento .b-wa { padding-bottom: 24px; }
+  .bento .b-wa { padding-bottom: 0; } /* watch runs off the bottom edge, like the phones */
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
     width: auto; height: 313px; aspect-ratio: 600 / 940;
-    flex: 0 1 auto; min-height: 0; margin: auto auto 0;
+    flex: 0 1 auto; min-height: 0; margin: auto auto -56px; /* bottom strap cut by the card edge */
   }
   .bento .b-wa:hover .watch { transform: scale(1.04); }
 
