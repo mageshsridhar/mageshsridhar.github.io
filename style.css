@@ -144,6 +144,7 @@ a { color: inherit; }
 .device .frame { position: relative; z-index: 1; width: 100%; pointer-events: none; }
 .device .screen { position: absolute; object-fit: cover; }
 .phone { width: min(300px, 70vw); }
+.device .frame { height: 100%; object-fit: contain; }
 .phone .screen { left: 5.2%; top: 2.4%; width: 89.6%; height: 95.2%; border-radius: 13% / 6%; }
 .watch { width: min(300px, 70vw); }
 .watch .screen { left: 14%; top: 21.5%; width: 72%; height: 56.5%; border-radius: 16%; }
@@ -176,24 +177,6 @@ a { color: inherit; }
 
 .slide-text { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
-/* "More on GitHub" tile (last slide on phones, small bento card on desktop) */
-/* In the carousel the slide must stay exactly 100% wide (the arrows scroll by
-   whole widths), so the side gutters are transparent borders, not margins. */
-.more-tile {
-  justify-content: center; align-self: center; height: 260px;
-  text-decoration: none; color: #fff;
-  background: var(--accent); background-clip: padding-box;
-  border: solid transparent; border-width: 0 56px; border-radius: 80px / 24px;
-  padding: 32px;
-}
-@media (max-width: 600px) {
-  .more-tile { border-width: 0 8px; border-radius: 32px / 24px; }
-}
-.more-tile img { width: 40px; height: 40px; }
-.more-tile h3 { font-size: 24px; }
-.more-arrow { font-size: 24px; transition: transform .2s; }
-.more-tile:hover .more-arrow { transform: translateX(6px); }
-
 /* Desktop: bento grid of project cards instead of the carousel */
 @media (min-width: 900px) {
   #projects { max-width: 1200px; }
@@ -205,13 +188,13 @@ a { color: inherit; }
       "ct ct ly"
       "ct ct ly"
       "ht wa he"
-      "ht gh he"
-      "ds mf mf"
-      "ds mf mf";
+      "ht wa he"
+      "mf ds ds"
+      "mf ds ds";
   }
   .b-ct { grid-area: ct; } .b-ly { grid-area: ly; } .b-ht { grid-area: ht; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
-  .b-mf { grid-area: mf; } .b-gh { grid-area: gh; }
+  .b-mf { grid-area: mf; }
 
   .bento .slide {
     position: relative; overflow: hidden; padding: 28px 28px 0; margin: 0;
@@ -233,29 +216,24 @@ a { color: inherit; }
   .bento .phone { width: 210px; margin: auto auto -150px; }
 
   /* Wide cards: text on the left, device on the right */
-  .b-ct, .b-mf { flex-direction: row; gap: 24px; }
-  .b-ct .slide-text, .b-mf .slide-text { flex: 1; padding-bottom: 28px; }
-  .b-ct .phone, .b-mf .phone { width: 250px; flex-shrink: 0; align-self: flex-end; margin: 0 8px -70px 0; }
-  .b-ct .phone { width: 290px; margin-right: 24px; margin-bottom: -110px; }
+  .b-ct, .b-ds { flex-direction: row; gap: 24px; }
+  .b-ct .slide-text, .b-ds .slide-text { flex: 1; padding-bottom: 28px; }
+  .b-ct .phone { width: 290px; flex-shrink: 0; align-self: flex-end; margin: 0 24px -110px 0; }
+  /* Dynamic Scroll: the whole phone (and GIF) fits inside the card, no cropping */
+  .b-ds { padding-bottom: 24px; }
+  .b-ds .phone { width: auto; height: 100%; aspect-ratio: 1350 / 2760; flex-shrink: 0; align-self: center; margin: 0 40px 0 0; }
+  .bento .b-ds:hover .phone { transform: scale(1.02); }
   .b-ct h3 { font-size: 32px; }
   .b-ct p { font-size: 16px; }
 
-  /* Watch card: compact, text and watch side by side */
-  .b-wa { flex-direction: row; align-items: center; padding: 20px 16px 20px 24px; gap: 8px; }
-  .b-wa .slide-text { flex: 1; }
-  .b-wa p { display: none; }
-  .b-wa .watch { width: 140px; flex-shrink: 0; margin: 0; }
-  .bento .b-wa:hover .watch { transform: scale(1.04); }
-
-  /* GitHub tile */
-  .bento .more-tile {
-    background: var(--accent); border: none; border-radius: 24px; color: #fff;
-    height: auto; align-self: stretch;
-    padding: 24px; align-items: flex-start; justify-content: space-between;
+  /* Watch card: tall, whole watch shown below the text */
+  .b-wa { padding-bottom: 24px; }
+  /* height-driven so it shrinks to whatever space the text leaves */
+  .b-wa .watch {
+    width: auto; height: 313px; aspect-ratio: 600 / 940;
+    flex: 0 1 auto; min-height: 0; margin: auto auto 0;
   }
-  .bento .more-tile h3 { font-size: 20px; }
-  .bento .more-tile img { width: 32px; height: 32px; }
-  .more-tile .more-arrow { position: absolute; right: 24px; bottom: 20px; }
+  .bento .b-wa:hover .watch { transform: scale(1.04); }
 
   .arrow, .dots { display: none; }
 }
