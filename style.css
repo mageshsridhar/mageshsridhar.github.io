@@ -218,43 +218,61 @@ a { color: inherit; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
   .b-mf { grid-area: mf; }
 
+  /* Card colors: each card sets --tint; strengths differ per theme */
+  .bento {
+    --tint-strong: 30%; --tint-soft: 6%; --tint-edge: 22%;
+    --glow-peak: 34%;
+  }
+  [data-theme="dark"] .bento {
+    --tint-strong: 26%; --tint-soft: 5%; --tint-edge: 26%;
+    --glow-peak: 24%;
+  }
+
   .bento .slide {
     position: relative; overflow: hidden; padding: 28px 28px 0; margin: 0;
     border-radius: 24px; text-align: left; align-items: stretch; gap: 0;
-    background: color-mix(in srgb, var(--tint, var(--accent)) 12%, var(--card));
-    border: 1px solid color-mix(in srgb, var(--tint, var(--accent)) 18%, transparent);
+    /* gradient in the card's own color: richest in the top-left corner,
+       fading to a faint wash at the bottom-right */
+    background:
+      radial-gradient(120% 90% at 0% 0%,
+        color-mix(in srgb, var(--tint) var(--tint-strong), transparent), transparent 70%),
+      linear-gradient(155deg,
+        color-mix(in srgb, var(--tint) calc(var(--tint-strong) * 0.6), var(--card)) 0%,
+        color-mix(in srgb, var(--tint) var(--tint-soft), var(--card)) 100%);
+    border: 1px solid color-mix(in srgb, var(--tint) var(--tint-edge), transparent);
     transition: transform .25s ease, box-shadow .25s ease;
   }
   .bento .slide:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
 
-  /* Cursor glow: script.js sets --mx / --my as the pointer moves over a card */
+  /* Cursor glow: script.js eases --mx / --my toward the pointer. Many stops
+     give a long, gradual falloff instead of a hard-edged spotlight. */
   .bento .slide::before {
     content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
     background: radial-gradient(
-      420px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in srgb, var(--tint) 50%, transparent),
-      transparent 65%);
-    opacity: 0; transition: opacity .35s ease;
+      560px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--tint) var(--glow-peak), transparent) 0%,
+      color-mix(in srgb, var(--tint) calc(var(--glow-peak) * 0.7), transparent) 15%,
+      color-mix(in srgb, var(--tint) calc(var(--glow-peak) * 0.42), transparent) 32%,
+      color-mix(in srgb, var(--tint) calc(var(--glow-peak) * 0.2), transparent) 50%,
+      color-mix(in srgb, var(--tint) calc(var(--glow-peak) * 0.07), transparent) 68%,
+      transparent 85%);
+    opacity: 0; transition: opacity .6s ease;
   }
-  /* a brighter rim that follows the cursor along the card's edge */
+  /* a soft rim that follows the cursor along the card's edge */
   .bento .slide::after {
     content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
     border-radius: inherit; padding: 1.5px;
     background: radial-gradient(
-      260px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in srgb, var(--tint) 85%, white), transparent 70%);
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--tint) 75%, white) 0%,
+      color-mix(in srgb, var(--tint) 35%, transparent) 40%,
+      transparent 80%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    opacity: 0; transition: opacity .35s ease;
+    opacity: 0; transition: opacity .6s ease;
   }
   .bento .slide:hover::before, .bento .slide:hover::after { opacity: 1; }
   .bento .slide-text, .bento .device { position: relative; z-index: 1; }
-  [data-theme="dark"] .bento .slide::before {
-    background: radial-gradient(
-      420px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in srgb, var(--tint) 28%, transparent),
-      transparent 65%);
-  }
   .bento .slide-text { align-items: flex-start; gap: 8px; }
   .bento .slide h3 { font-size: 22px; line-height: 1.2; }
   .bento .slide p { font-size: 14.5px; max-width: 32ch; text-wrap: pretty; }

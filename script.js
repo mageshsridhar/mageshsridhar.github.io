@@ -4,11 +4,29 @@ document.getElementById("year").textContent = new Date().getFullYear();
 // Bento cards: a glow that follows the cursor (mouse/trackpad only)
 (() => {
   if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  // The glow eases toward the pointer each frame, so it drifts after the cursor
+  // rather than snapping to it.
   document.querySelectorAll(".bento .slide").forEach((card) => {
-    card.addEventListener("pointermove", (e) => {
+    let x = 0, y = 0, tx = 0, ty = 0, raf = 0;
+    const set = () => {
+      card.style.setProperty("--mx", `${x}px`);
+      card.style.setProperty("--my", `${y}px`);
+    };
+    const step = () => {
+      x += (tx - x) * 0.12;
+      y += (ty - y) * 0.12;
+      set();
+      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(step) : 0;
+    };
+    const target = (e) => {
       const r = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      card.style.setProperty("--my", `${e.clientY - r.top}px`);
+      tx = e.clientX - r.left;
+      ty = e.clientY - r.top;
+    };
+    card.addEventListener("pointerenter", (e) => { target(e); x = tx; y = ty; set(); });
+    card.addEventListener("pointermove", (e) => {
+      target(e);
+      if (!raf) raf = requestAnimationFrame(step);
     });
   });
 })();
