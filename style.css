@@ -273,12 +273,18 @@ a { color: inherit; }
   /* Phones peek up from the bottom edge of the card */
   .bento .device { transition: transform .35s ease; }
   .bento .slide:hover .device { transform: translateY(-8px); }
-  .bento .phone { width: 210px; margin: auto auto -150px; }
+  /* phones peek up from the bottom edge; top of each device sits at 176px */
+  .bento .phone { width: 240px; margin: auto auto -150px; }
 
   /* Wide cards: text on the left, device on the right */
   .bento .b-ct, .bento .b-ds { flex-direction: row; gap: 40px; }
   .b-ct .slide-text, .b-ds .slide-text { flex: 1; padding-bottom: 28px; }
-  .b-ct .phone { width: 290px; flex-shrink: 0; align-self: flex-end; margin: 0 24px -110px 0; }
+  /* up to 320px, but never more than 44% of the card so the text keeps room */
+  .b-ct .phone {
+    --pw: min(320px, 44%);
+    width: var(--pw); flex-shrink: 0; align-self: flex-end;
+    margin: 0 24px calc(var(--pw) * -0.53) 0;
+  }
   /* Dynamic Scroll: the whole phone (and GIF) fits inside the card, no cropping */
   .bento .b-ds { padding: 28px; } /* equal top/bottom so the phone is centered */
   .b-ds .phone { width: auto; height: 100%; aspect-ratio: 1350 / 2760; flex-shrink: 0; align-self: center; margin: 0 4px 0 0; }
@@ -290,8 +296,8 @@ a { color: inherit; }
   .bento .b-wa { padding-bottom: 0; } /* watch runs off the bottom edge, like the phones */
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
-    width: auto; height: 313px; aspect-ratio: 600 / 940;
-    flex: 0 1 auto; min-height: 0; margin: auto auto -33px; /* top lines up with the phones beside it; strap runs off the edge */
+    width: auto; height: 380px; aspect-ratio: 600 / 940;
+    flex: 0 1 auto; min-height: 0; margin: auto auto -40px; /* top lines up with the phones beside it; strap runs off the edge */
   }
   .bento .b-wa:hover .watch { transform: scale(1.04); }
 
@@ -381,43 +387,37 @@ a { color: inherit; }
 }
 
 /* Project links. Phones/tablets: the normal purple "Github" button.
-   Desktop bento: the button is hidden and the link covers the whole card,
-   showing a "View on GitHub" pill when the card is hovered or focused. */
+   Desktop bento: the button is hidden and the link covers the whole card.
+   On hover/focus only the card's text blurs out and "View on GitHub" takes
+   its place; the device stays sharp. */
 .gh-hover { display: none; }
 @media (min-width: 900px) {
   .bento .slide > .gh {
-    position: absolute; inset: 0; z-index: 3;
-    display: grid; place-items: center;
+    position: absolute; inset: 0; z-index: 3; display: block;
     margin: 0; padding: 0; min-height: 0; border-radius: inherit;
-    background: transparent; color: inherit;
+    background: transparent; color: var(--text);
   }
   .bento .slide > .gh:hover { transform: none; filter: none; }
   .bento .slide > .gh > img, .bento .gh-label { display: none; }
 
-  /* soft scrim behind the pill */
-  .bento .slide > .gh::before {
-    content: ""; position: absolute; inset: 0; border-radius: inherit;
-    background: color-mix(in srgb, var(--card) 30%, transparent);
-    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
-    opacity: 0; transition: opacity .3s ease;
-  }
-  .bento .gh-hover {
-    position: relative; display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 22px; border-radius: 999px;
-    background: var(--text); color: var(--bg);
-    font: 600 15px/1 var(--sans);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
-    opacity: 0; transform: translateY(10px) scale(.96);
-    transition: opacity .3s ease, transform .35s cubic-bezier(.2, .8, .2, 1);
-  }
-  .bento .gh-hover img { width: 18px; height: 18px; }
-  [data-theme="dark"] .bento .gh-hover img { filter: invert(1); }
-  .gh-arrow { transition: transform .3s ease; }
+  .bento .slide-text { transition: filter .35s ease, opacity .35s ease; }
+  .bento .slide:hover .slide-text,
+  .bento .slide:has(> .gh:focus-visible) .slide-text { filter: blur(6px); opacity: .35; }
 
-  .bento .slide:hover > .gh::before,
-  .bento .slide > .gh:focus-visible::before { opacity: 1; }
+  .bento .gh-hover {
+    position: absolute; top: 28px; left: 28px;
+    display: inline-flex; align-items: center; gap: 10px;
+    font: 700 22px/1.2 var(--sans); letter-spacing: -0.01em; white-space: nowrap;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .3s ease, transform .4s cubic-bezier(.2, .8, .2, 1);
+  }
+  .b-ct .gh-hover { font-size: 30px; }
+  .bento .gh-hover img { width: 1em; height: 1em; filter: invert(1); }   /* icon file is white */
+  [data-theme="dark"] .bento .gh-hover img { filter: none; }
+  .gh-arrow { display: inline-block; transition: transform .3s ease; }
+
   .bento .slide:hover .gh-hover,
   .bento .slide > .gh:focus-visible .gh-hover { opacity: 1; transform: none; }
-  .bento .slide:hover .gh-arrow { transform: translate(2px, -2px); }
+  .bento .slide:hover .gh-arrow { transform: translate(3px, -3px); }
   .bento .slide > .gh:focus-visible { outline: 3px solid var(--tint); outline-offset: 3px; }
 }
