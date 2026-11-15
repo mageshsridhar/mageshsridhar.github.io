@@ -285,10 +285,13 @@ a { color: inherit; }
     width: var(--pw); flex-shrink: 0; align-self: flex-end;
     margin: 0 24px calc(var(--pw) * -0.53) 0;
   }
-  /* Dynamic Scroll: the whole phone (and GIF) fits inside the card, no cropping */
-  .bento .b-ds { padding: 28px; } /* equal top/bottom so the phone is centered */
-  .b-ds .phone { width: auto; height: 100%; aspect-ratio: 1350 / 2760; flex-shrink: 0; align-self: center; margin: 0 4px 0 0; }
-  .bento .b-ds:hover .phone { transform: scale(1.02); }
+  /* Dynamic Scroll: larger phone running off the bottom edge like the others,
+     cropped just below its "Change Scroll Direction" button */
+  .b-ds .phone {
+    --pw: min(274px, 44%);
+    width: var(--pw); flex-shrink: 0; align-self: flex-end;
+    margin: 0 4px calc(var(--pw) * -0.27) 0;
+  }
   .b-ct h3 { font-size: 32px; }
   .b-ct p { font-size: 16px; }
 
