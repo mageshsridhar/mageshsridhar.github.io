@@ -450,3 +450,14 @@ a { color: inherit; }
     filter: drop-shadow(0 22px 28px rgba(0, 0, 0, .65)) drop-shadow(0 4px 8px rgba(0, 0, 0, .4));
   }
 }
+
+/* Theme switching (see setTheme in script.js) */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+/* Fallback cross-fade for browsers without View Transitions */
+.theme-fade, .theme-fade *, .theme-fade *::before, .theme-fade *::after {
+  transition: background-color .4s ease, color .4s ease, border-color .4s ease,
+              fill .4s ease, stroke .4s ease, box-shadow .4s ease, filter .4s ease !important;
+}
