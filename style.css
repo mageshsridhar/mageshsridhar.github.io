@@ -97,8 +97,9 @@ a { color: inherit; }
   color: var(--text);
 }
 
-/* iPad and desktop: left-aligned intro. Phones stay centered. */
-@media (min-width: 601px) {
+/* Desktop (photo and intro side by side): left-aligned intro.
+   iPad and phones, where the intro sits under the photo, stay centered. */
+@media (min-width: 1000px) {
   .hero-text { text-align: left; }
   .hero-text .hero-word { margin-left: calc(var(--w) * -0.007); } /* cancel the "a"'s side bearing */
   .hero-text .cta-row { justify-content: flex-start; }
