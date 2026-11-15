@@ -9,6 +9,11 @@
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   --sans: "Poppins", system-ui, -apple-system, sans-serif;
   --serif: "Prata", Georgia, serif;
+  /* Fonts for the sections below the hero (Projects → footer). The nav and
+     hero keep Poppins. --section-serif is the section-title font. */
+  --section-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --section-serif: "Inter Tight", "Inter", system-ui, sans-serif;
+  --section-title-weight: 700;
 }
 
 /* Dark theme. The inline script in <head> sets data-theme from the saved
@@ -139,8 +144,9 @@ a { color: inherit; }
 /* Sections */
 .section { max-width: 1000px; margin: 0 auto; padding: 72px 16px; text-align: center; }
 .section h2 {
-  font-family: var(--serif); font-weight: 400;
-  font-size: clamp(40px, 6vw, 60px); line-height: 1.1; margin-bottom: 40px;
+  font-family: var(--serif); font-weight: var(--section-title-weight, 400);
+  font-size: clamp(36px, 5.2vw, 54px); line-height: 1.1; margin-bottom: 40px;
+  letter-spacing: -0.035em;
 }
 
 /* Carousel */
@@ -364,4 +370,12 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+/* Sections below the hero use their own font pair (set in :root). Re-pointing
+   --sans/--serif here means buttons and cards inside follow along. */
+.section, .footer {
+  --sans: var(--section-sans);
+  --serif: var(--section-serif);
+  font-family: var(--sans);
 }
