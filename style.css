@@ -267,12 +267,12 @@ a { color: inherit; }
   .bento .phone { width: 210px; margin: auto auto -150px; }
 
   /* Wide cards: text on the left, device on the right */
-  .b-ct, .b-ds { flex-direction: row; gap: 24px; }
+  .bento .b-ct, .bento .b-ds { flex-direction: row; gap: 40px; }
   .b-ct .slide-text, .b-ds .slide-text { flex: 1; padding-bottom: 28px; }
   .b-ct .phone { width: 290px; flex-shrink: 0; align-self: flex-end; margin: 0 24px -110px 0; }
   /* Dynamic Scroll: the whole phone (and GIF) fits inside the card, no cropping */
   .bento .b-ds { padding: 28px; } /* equal top/bottom so the phone is centered */
-  .b-ds .phone { width: auto; height: 100%; aspect-ratio: 1350 / 2760; flex-shrink: 0; align-self: center; margin: 0 40px 0 0; }
+  .b-ds .phone { width: auto; height: 100%; aspect-ratio: 1350 / 2760; flex-shrink: 0; align-self: center; margin: 0 4px 0 0; }
   .bento .b-ds:hover .phone { transform: scale(1.02); }
   .b-ct h3 { font-size: 32px; }
   .b-ct p { font-size: 16px; }
