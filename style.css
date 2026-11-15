@@ -204,6 +204,35 @@ a { color: inherit; }
     transition: transform .25s ease, box-shadow .25s ease;
   }
   .bento .slide:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+  /* Cursor glow: script.js sets --mx / --my as the pointer moves over a card */
+  .bento .slide::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--tint) 50%, transparent),
+      transparent 65%);
+    opacity: 0; transition: opacity .35s ease;
+  }
+  /* a brighter rim that follows the cursor along the card's edge */
+  .bento .slide::after {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    border-radius: inherit; padding: 1.5px;
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--tint) 85%, white), transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .bento .slide:hover::before, .bento .slide:hover::after { opacity: 1; }
+  .bento .slide-text, .bento .device { position: relative; z-index: 1; }
+  [data-theme="dark"] .bento .slide::before {
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--tint) 28%, transparent),
+      transparent 65%);
+  }
   .bento .slide-text { align-items: flex-start; gap: 8px; }
   .bento .slide h3 { font-size: 22px; line-height: 1.2; }
   .bento .slide p { font-size: 14.5px; max-width: 32ch; text-wrap: pretty; }
@@ -220,14 +249,14 @@ a { color: inherit; }
   .b-ct .slide-text, .b-ds .slide-text { flex: 1; padding-bottom: 28px; }
   .b-ct .phone { width: 290px; flex-shrink: 0; align-self: flex-end; margin: 0 24px -110px 0; }
   /* Dynamic Scroll: the whole phone (and GIF) fits inside the card, no cropping */
-  .b-ds { padding-bottom: 24px; }
+  .bento .b-ds { padding: 28px; } /* equal top/bottom so the phone is centered */
   .b-ds .phone { width: auto; height: 100%; aspect-ratio: 1350 / 2760; flex-shrink: 0; align-self: center; margin: 0 40px 0 0; }
   .bento .b-ds:hover .phone { transform: scale(1.02); }
   .b-ct h3 { font-size: 32px; }
   .b-ct p { font-size: 16px; }
 
   /* Watch card: tall, whole watch shown below the text */
-  .b-wa { padding-bottom: 24px; }
+  .bento .b-wa { padding-bottom: 24px; }
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
     width: auto; height: 313px; aspect-ratio: 600 / 940;

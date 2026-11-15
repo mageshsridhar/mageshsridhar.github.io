@@ -1,6 +1,18 @@
 // Footer year
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// Bento cards: a glow that follows the cursor (mouse/trackpad only)
+(() => {
+  if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  document.querySelectorAll(".bento .slide").forEach((card) => {
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      card.style.setProperty("--my", `${e.clientY - r.top}px`);
+    });
+  });
+})();
+
 // Hero photo: keep the eyes on the top rule-of-thirds line at any size.
 (() => {
   const img = document.querySelector(".hero-photo");
