@@ -379,3 +379,45 @@ a { color: inherit; }
   --serif: var(--section-serif);
   font-family: var(--sans);
 }
+
+/* Project links. Phones/tablets: the normal purple "Github" button.
+   Desktop bento: the button is hidden and the link covers the whole card,
+   showing a "View on GitHub" pill when the card is hovered or focused. */
+.gh-hover { display: none; }
+@media (min-width: 900px) {
+  .bento .slide > .gh {
+    position: absolute; inset: 0; z-index: 3;
+    display: grid; place-items: center;
+    margin: 0; padding: 0; min-height: 0; border-radius: inherit;
+    background: transparent; color: inherit;
+  }
+  .bento .slide > .gh:hover { transform: none; filter: none; }
+  .bento .slide > .gh > img, .bento .gh-label { display: none; }
+
+  /* soft scrim behind the pill */
+  .bento .slide > .gh::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: color-mix(in srgb, var(--card) 30%, transparent);
+    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    opacity: 0; transition: opacity .3s ease;
+  }
+  .bento .gh-hover {
+    position: relative; display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 999px;
+    background: var(--text); color: var(--bg);
+    font: 600 15px/1 var(--sans);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+    opacity: 0; transform: translateY(10px) scale(.96);
+    transition: opacity .3s ease, transform .35s cubic-bezier(.2, .8, .2, 1);
+  }
+  .bento .gh-hover img { width: 18px; height: 18px; }
+  [data-theme="dark"] .bento .gh-hover img { filter: invert(1); }
+  .gh-arrow { transition: transform .3s ease; }
+
+  .bento .slide:hover > .gh::before,
+  .bento .slide > .gh:focus-visible::before { opacity: 1; }
+  .bento .slide:hover .gh-hover,
+  .bento .slide > .gh:focus-visible .gh-hover { opacity: 1; transform: none; }
+  .bento .slide:hover .gh-arrow { transform: translate(2px, -2px); }
+  .bento .slide > .gh:focus-visible { outline: 3px solid var(--tint); outline-offset: 3px; }
+}
