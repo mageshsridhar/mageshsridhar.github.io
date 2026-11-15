@@ -103,13 +103,11 @@ a { color: inherit; }
   .hero-text { text-align: left; }
   .hero-text .hero-word { margin-left: calc(var(--w) * -0.007); } /* cancel the "a"'s side bearing */
   .hero-text .cta-row { justify-content: flex-start; }
-  .hero-text .zigzag { margin-left: 0; }
-}
+  .hero-text }
 .hero-sub {
   font-size: clamp(15px, 1.9vw, 19px); font-weight: 600; letter-spacing: -0.04em;
   line-height: 1.2; margin-top: 2px;
 }
-.zigzag { display: block; width: 196px; height: auto; margin: 40px auto 0; color: var(--text); }
 
 /* Wide screens: photo and text side by side so the intro and the
    Email button fit in the first screen */
@@ -121,11 +119,11 @@ a { color: inherit; }
   .hero-photo { height: min(calc(100vh - 120px), 640px, 60vw); }
   .hero-copy { margin-top: 0; }
   .hero-word { --w: 347px; }
-  .zigzag { margin-top: 28px; }
-}
+  }
 
 /* Buttons: one primary (filled purple) and one secondary (outline) style */
 .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
+.hero .cta-row { margin-top: 32px; } /* breathing room under the wordmark */
 .btn, .gh {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 44px; padding: 10px 24px; border-radius: 12px;
