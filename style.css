@@ -218,28 +218,15 @@ a { color: inherit; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
   .b-mf { grid-area: mf; }
 
-  /* Card colors: each card sets --tint; strengths differ per theme */
-  .bento {
-    --tint-strong: 30%; --tint-soft: 6%; --tint-edge: 22%;
-    --glow-peak: 34%;
-  }
-  [data-theme="dark"] .bento {
-    --tint-strong: 26%; --tint-soft: 5%; --tint-edge: 26%;
-    --glow-peak: 24%;
-  }
+  /* Each card sets --tint; the hover glow is a little softer in dark mode */
+  .bento { --glow-peak: 34%; }
+  [data-theme="dark"] .bento { --glow-peak: 24%; }
 
   .bento .slide {
     position: relative; overflow: hidden; padding: 28px 28px 0; margin: 0;
     border-radius: 24px; text-align: left; align-items: stretch; gap: 0;
-    /* gradient in the card's own color: richest in the top-left corner,
-       fading to a faint wash at the bottom-right */
-    background:
-      radial-gradient(120% 90% at 0% 0%,
-        color-mix(in srgb, var(--tint) var(--tint-strong), transparent), transparent 70%),
-      linear-gradient(155deg,
-        color-mix(in srgb, var(--tint) calc(var(--tint-strong) * 0.6), var(--card)) 0%,
-        color-mix(in srgb, var(--tint) var(--tint-soft), var(--card)) 100%);
-    border: 1px solid color-mix(in srgb, var(--tint) var(--tint-edge), transparent);
+    background: color-mix(in srgb, var(--tint) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--tint) 18%, transparent);
     transition: transform .25s ease, box-shadow .25s ease;
   }
   .bento .slide:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
