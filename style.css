@@ -87,7 +87,23 @@ a { color: inherit; }
 .hero-line strong { font-weight: 700; }
 .hero h1 { font-size: clamp(44px, 7vw, 72px); line-height: 1.1; font-weight: 700; }
 /* "animations" wordmark (components/animations-word.js) + the line under it */
-.hero-word { width: min(385px, 88%); margin: 0 auto; color: var(--text); }
+/* The top ~half of the wordmark is empty sky for the ball's arc. Pull the word up
+   into it (0.19 x its width) so the letters sit close to the line above; the ball
+   then flies over that text, drawn on top of it. */
+.hero-word {
+  --w: min(385px, calc((100vw - 32px) * 0.88));
+  width: var(--w); margin: calc(var(--w) * -0.19) auto 0;
+  position: relative; z-index: 1; pointer-events: none;
+  color: var(--text);
+}
+
+/* iPad and desktop: left-aligned intro. Phones stay centered. */
+@media (min-width: 601px) {
+  .hero-text { text-align: left; }
+  .hero-text .hero-word { margin-left: calc(var(--w) * -0.007); } /* cancel the "a"'s side bearing */
+  .hero-text .cta-row { justify-content: flex-start; }
+  .hero-text .zigzag { margin-left: 0; }
+}
 .hero-sub {
   font-size: clamp(15px, 1.9vw, 19px); font-weight: 600; letter-spacing: -0.04em;
   line-height: 1.2; margin-top: 2px;
@@ -103,7 +119,7 @@ a { color: inherit; }
   }
   .hero-photo { height: min(calc(100vh - 120px), 640px, 60vw); }
   .hero-copy { margin-top: 0; }
-  .hero-word { width: min(347px, 100%); }
+  .hero-word { --w: 347px; }
   .zigzag { margin-top: 28px; }
 }
 
