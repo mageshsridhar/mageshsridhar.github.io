@@ -1,6 +1,28 @@
 // Footer year
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// Hero photo: keep the eyes on the top rule-of-thirds line at any size.
+(() => {
+  const img = document.querySelector(".hero-photo");
+  if (!img) return;
+  const EYE_Y = 0.406; // eye line as a fraction of the photo's height (y ≈ 832 of 2048)
+
+  function frame() {
+    const W = img.clientWidth, H = img.clientHeight;
+    const iw = img.naturalWidth || 1365, ih = img.naturalHeight || 2048;
+    if (!W || !H) return;
+    const scale = Math.max(W / iw, H / ih);   // object-fit: cover
+    const overflow = ih * scale - H;          // how much photo is cropped vertically
+    if (overflow <= 0) return;
+    const shift = Math.min(Math.max(EYE_Y * ih * scale - H / 3, 0), overflow);
+    img.style.objectPosition = `50% ${(shift / overflow) * 100}%`;
+  }
+
+  new ResizeObserver(frame).observe(img);
+  img.addEventListener("load", frame);
+  frame();
+})();
+
 // Light / dark toggle. A click saves the choice; until then the site follows the system setting.
 (() => {
   const root = document.documentElement;
