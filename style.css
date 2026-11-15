@@ -273,8 +273,8 @@ a { color: inherit; }
   /* Phones peek up from the bottom edge of the card */
   .bento .device { transition: transform .35s ease; }
   .bento .slide:hover .device { transform: translateY(-8px); }
-  /* phones peek up from the bottom edge; top of each device sits at 176px */
-  .bento .phone { width: 240px; margin: auto auto -150px; }
+  /* phones peek up from the bottom edge; top of each device sits ~144px down */
+  .bento .phone { width: 240px; margin: auto auto -118px; }
 
   /* Wide cards: text on the left, device on the right */
   .bento .b-ct, .bento .b-ds { flex-direction: row; gap: 40px; }
@@ -296,8 +296,8 @@ a { color: inherit; }
   .bento .b-wa { padding-bottom: 0; } /* watch runs off the bottom edge, like the phones */
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
-    width: auto; height: 380px; aspect-ratio: 600 / 940;
-    flex: 0 1 auto; min-height: 0; margin: auto auto -40px; /* top lines up with the phones beside it; strap runs off the edge */
+    width: auto; height: 420px; aspect-ratio: 600 / 940;
+    flex: 0 1 auto; min-height: 0; margin: auto auto -48px; /* top lines up with the phones beside it; strap runs off the edge */
   }
   .bento .b-wa:hover .watch { transform: scale(1.04); }
 
