@@ -101,19 +101,3 @@ document.getElementById("year").textContent = new Date().getFullYear();
   });
   mark();
 })();
-
-// Hero "animations" Lottie (same file as the original Framer site)
-(() => {
-  const el = document.getElementById("hero-lottie");
-  if (!el || !window.lottie) return;
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const anim = lottie.loadAnimation({
-    container: el,
-    renderer: "svg",
-    loop: !reduce,
-    autoplay: !reduce,
-    path: "assets/animations.json",
-  });
-  // With reduced motion, show the finished lettering instead of animating
-  if (reduce) anim.addEventListener("DOMLoaded", () => anim.goToAndStop(anim.totalFrames - 1, true));
-})();
