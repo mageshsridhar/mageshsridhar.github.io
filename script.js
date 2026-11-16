@@ -196,3 +196,31 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }, { rootMargin: "200px" });
   videos.forEach((v) => io.observe(v));
 })();
+
+// Phone menu: the button opens the section links under the bar. It closes on
+// a link tap, Escape, a tap outside, or when the screen gets wider.
+(() => {
+  const header = document.querySelector(".nav");
+  const btn = document.querySelector(".menu-toggle");
+  const nav = document.getElementById("site-nav");
+  if (!btn || !nav) return;
+
+  function setOpen(open) {
+    header.classList.toggle("open", open);
+    btn.setAttribute("aria-expanded", open);
+    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  const isOpen = () => header.classList.contains("open");
+
+  btn.addEventListener("click", (e) => {
+    setOpen(!isOpen());
+    // keyboard users (Enter/Space give detail 0) land on the first link
+    if (isOpen() && e.detail === 0) nav.querySelector("a").focus({ preventScroll: true });
+  });
+  nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen()) { setOpen(false); btn.focus(); }
+  });
+  document.addEventListener("click", (e) => { if (isOpen() && !header.contains(e.target)) setOpen(false); });
+  matchMedia("(min-width: 601px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
+})();
