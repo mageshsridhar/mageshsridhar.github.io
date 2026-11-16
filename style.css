@@ -471,10 +471,13 @@ a { color: inherit; }
     position: absolute; inset: 0; width: 100%; height: 100%;
     object-fit: contain; object-position: bottom center;
   }
+  /* mirrors the close button: a borderless 46px button in the top-left corner,
+     so both icons sit the same distance from the top and the side */
   .nav .theme-toggle {
-    grid-area: theme; margin: 0 0 0 20px; width: 40px; height: 40px;   /* left edge in line with the links */
-    background: transparent; border-color: var(--line);
+    grid-area: theme; align-self: start; margin: 0; width: 46px; height: 46px;
+    background: transparent; border: 0;
   }
+  .nav .theme-toggle:hover { transform: none; }
   /* pinned to the top-right corner so it stays put while the panel grows */
   .menu-toggle {
     display: block; position: absolute; top: 0; right: 0; width: 46px; height: 46px;
