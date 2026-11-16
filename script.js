@@ -35,11 +35,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
 (() => {
   const img = document.querySelector(".hero-photo");
   if (!img) return;
-  const EYE_Y = 0.406; // eye line as a fraction of the photo's height (y ≈ 832 of 2048)
+  const EYE_Y = 0.335; // eye line as a fraction of the (cropped) photo's height
 
   function frame() {
     const W = img.clientWidth, H = img.clientHeight;
-    const iw = img.naturalWidth || 1365, ih = img.naturalHeight || 2048;
+    const iw = img.naturalWidth || 1150, ih = img.naturalHeight || 1140;
     if (!W || !H) return;
     const scale = Math.max(W / iw, H / ih);   // object-fit: cover
     const overflow = ih * scale - H;          // how much photo is cropped vertically
