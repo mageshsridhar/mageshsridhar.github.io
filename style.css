@@ -89,16 +89,7 @@ a { color: inherit; }
 }
 .hero-copy { margin-top: 24px; font-weight: 600; letter-spacing: -0.04em; }
 .hero-line { font-size: clamp(18px, 2.4vw, 24px); font-weight: 600; line-height: 1.3; }
-/* The name sits on a light purple highlight (same purple as the Email button).
-   Padding and an equal negative margin keep the text where it was. */
-.hero-line strong {
-  --hl: color-mix(in srgb, #8b5cf6 18%, transparent);
-  font-weight: 700;
-  background: linear-gradient(var(--hl), var(--hl)) no-repeat left center / 100% 100%;
-  padding: 0 .14em; margin: 0 -.14em; border-radius: .25em;
-  -webkit-box-decoration-break: clone; box-decoration-break: clone;
-}
-[data-theme="dark"] .hero-line strong { --hl: color-mix(in srgb, #8b5cf6 32%, transparent); }
+.hero-line strong { font-weight: 700; }
 .hero h1 { font-size: clamp(44px, 7vw, 72px); line-height: 1.1; font-weight: 700; }
 /* "animations" wordmark (components/animations-word.js) + the line under it */
 /* The top ~half of the wordmark is empty sky for the ball's arc. Pull the word up
@@ -498,25 +489,34 @@ a { color: inherit; }
 .slide-text .made + h3 { margin-top: -11px; }   /* sit the label close to its title */
 .bento .slide-text .made + h3 { margin-top: -3px; }
 
-/* Hero entrance, once on page load. Each line rises into place with a slight
-   spring overshoot, one after another; the name's highlight then sweeps in
-   behind it. The wordmark rises last and its ball starts bouncing as it lands
-   (its delay="1050" attribute), then the closing line and Email button follow.
-   The .intro class is added by the head script only when reduced motion is off. */
+/* Hero entrance, once on page load, in two groups: the first three lines rise
+   in together, then the last three (the wordmark among them). The wordmark's
+   ball starts bouncing once it has landed (its delay="1050" attribute), then
+   the Email button follows. Meanwhile a light purple shimmer passes through the
+   letters of the name. The .intro class is added by the head script only when
+   reduced motion is off. */
 @keyframes hero-rise {
-  0%   { opacity: 0; transform: translateY(18px); filter: blur(4px); }
-  60%  { opacity: 1; transform: translateY(-2px); filter: blur(0); }
-  100% { opacity: 1; transform: none; filter: none; }
+  from { opacity: 0; transform: translateY(12px); filter: blur(3px); }
 }
-@keyframes hero-highlight { from { background-size: 0% 100%; } }
 .intro .hero-copy > *, .intro .hero .cta-row {
-  animation: hero-rise .7s cubic-bezier(.2, .8, .2, 1) both;
+  animation: hero-rise .6s cubic-bezier(.22, 1, .36, 1) both;
   animation-delay: var(--d, 0ms);
 }
-.intro .hero-copy > :nth-child(2) { --d: 90ms; }
-.intro .hero-copy > :nth-child(3) { --d: 180ms; }
-.intro .hero-copy > :nth-child(4) { --d: 270ms; }
-.intro .hero-copy > .hero-word    { --d: 360ms; }
-.intro .hero-copy > .hero-sub     { --d: 1150ms; }
-.intro .hero .cta-row             { --d: 1250ms; }
-.intro .hero-line strong { animation: hero-highlight .65s cubic-bezier(.65, 0, .35, 1) 650ms both; }
+.intro .hero-copy > :nth-child(n + 4) { --d: 450ms; }   /* "plus a keen…", wordmark, "and creating…" */
+.intro .hero .cta-row { --d: 1100ms; }
+
+/* Shimmer: the name is painted with a gradient clipped to its letters. The
+   gradient is wide, so only a band of it shows; sliding it across moves a light
+   purple glint through the text, ending on plain text color. */
+@keyframes name-shimmer {
+  from { background-position: 100% 0; }
+  to   { background-position: 0 0; }
+}
+.intro .hero-line strong {
+  --shine: #7c3aed; --shine-core: #a78bfa;
+  color: transparent;
+  background: linear-gradient(100deg, var(--text) 40%, var(--shine) 46%, var(--shine-core) 50%, var(--shine) 54%, var(--text) 60%) 0 0 / 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  animation: name-shimmer 1.4s cubic-bezier(.45, 0, .25, 1) 500ms both;
+}
+[data-theme="dark"].intro .hero-line strong { --shine: #a78bfa; --shine-core: #ddd6fe; }
