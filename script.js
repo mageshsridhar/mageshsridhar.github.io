@@ -255,3 +255,21 @@ document.getElementById("year").textContent = new Date().getFullYear();
   document.addEventListener("click", (e) => { if (isOpen() && !header.contains(e.target)) setOpen(false); });
   matchMedia("(min-width: 601px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
 })();
+
+// In-page links (nav, avatar, "See" links): always glide to the section,
+// whatever the browser's support for CSS smooth scrolling. The section lands
+// below the sticky bar thanks to scroll-padding-top in the CSS. With reduced
+// motion it jumps straight there.
+(() => {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    const id = link.getAttribute("href").slice(1);
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "start" });
+    history.pushState(null, "", "#" + id);
+  });
+})();
