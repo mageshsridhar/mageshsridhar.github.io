@@ -11,8 +11,8 @@
  *         <animations-word></animations-word>
  * Color follows the CSS `color` property; size follows the element's width.
  * The ball and the "t" pick up an accent color for part of the loop: the ball turns
- * the accent when it lands on the "t", the "t" follows, and both fade back when the
- * ball lands on the second "i". Set the accent with the CSS variable
+ * the accent on its first bounce on the first "i", the "t" turns when the ball lands
+ * on it, and both fade back when the ball lands on the second "i". Set the accent with the CSS variable
  * `--animations-accent` (default #7c3aed).
  * Respects prefers-reduced-motion and pauses when scrolled out of view.
  */
@@ -39,13 +39,15 @@
 
   // Accent color timeline, in animation frames (100 fps). Each part fades to the
   // accent over [rise start, rise end] and back over [fall start, fall end].
-  //   ball: turns as it lands on the "t" (frame ~240), back as it lands on the second "i"
-  //   "t":  turns just after the ball lands, back at the same time as the ball
+  //   ball: turns on its first bounce on the first "i" (it squashes against the stem
+  //         at frame 66) and stays accent through the flight and the landing
+  //   "t":  turns as the ball lands on it (the stem squashes at frame ~230)
+  //   both fade back as the ball lands on the second "i" at the end of the loop
   const TINT = {
-    dot:      { up: [236, 252], down: [600, 620] },
-    tStem:    { up: [250, 276], down: [600, 620] },
-    barLeft:  { up: [250, 276], down: [600, 620] },
-    barRight: { up: [250, 276], down: [600, 620] },
+    dot:      { up: [60, 74],   down: [600, 620] },
+    tStem:    { up: [220, 240], down: [600, 620] },
+    barLeft:  { up: [220, 240], down: [600, 620] },
+    barRight: { up: [220, 240], down: [600, 620] },
   };
   const smooth = (a, b, f) => {
     const t = Math.min(1, Math.max(0, (f - a) / (b - a)));
