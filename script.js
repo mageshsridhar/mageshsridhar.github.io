@@ -208,9 +208,15 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   // the panel's open height, measured at its open width
   function measure() {
+    // Measure with transitions off, and settle back to the closed size before
+    // turning them on again; otherwise the measuring itself starts a shrink
+    // animation and the grow skips straight to the end.
+    header.style.transition = "none";
     header.classList.add("measuring");
     header.style.setProperty("--open-h", header.offsetHeight + "px");
     header.classList.remove("measuring");
+    void header.offsetWidth;
+    header.style.transition = "";
   }
 
   function setOpen(open) {
