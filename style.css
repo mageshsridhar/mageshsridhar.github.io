@@ -88,11 +88,11 @@ a { color: inherit; }
   object-fit: cover; object-position: 50% 38%;
   border-radius: 20px;
 }
-/* Border ring around the hero photo: a thin purple gradient line 7px outside
-   the photo. It stays still; the photo itself animates in (see .intro below). */
+/* Border around the hero photo: a thin purple gradient line hugging the photo's
+   edge. It stays still; the photo itself animates in (see .intro below). */
 .hero-media { position: relative; }
 .hero-ring {
-  position: absolute; inset: -7px; width: calc(100% + 14px); height: calc(100% + 14px);
+  position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px);
   overflow: visible; pointer-events: none;
 }
 .hero-ring rect { fill: none; stroke: url(#hero-ring-grad); stroke-width: 2; }
@@ -518,6 +518,10 @@ a { color: inherit; }
 }
 .intro .hero-copy > :nth-child(n + 5) { --d: 700ms; }   /* "plus a keen…", wordmark, "and creating…" */
 .intro .hero .cta-row { --d: 1500ms; }
-/* The photo grows into its (static) border ring, fading in from a soft blur */
-@keyframes photo-in { from { opacity: 0; transform: scale(.94); filter: blur(6px); } }
-.intro .hero-photo { animation: photo-in 1.2s cubic-bezier(.22, 1, .36, 1) both; }
+/* The photo slowly comes into focus inside its (static) border: a long, soft
+   blur-to-sharp with a gentle fade and a barely-there scale */
+@keyframes photo-in {
+  from { opacity: 0; transform: scale(.98); filter: blur(16px); }
+  40%  { opacity: 1; }
+}
+.intro .hero-photo { animation: photo-in 2.2s cubic-bezier(.33, 0, .2, 1) both; }
