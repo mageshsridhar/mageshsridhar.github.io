@@ -256,12 +256,45 @@ document.getElementById("year").textContent = new Date().getFullYear();
   matchMedia("(min-width: 601px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
 })();
 
-// In-page links (nav, avatar, "See" links): always glide to the section,
-// whatever the browser's support for CSS smooth scrolling. The section lands
-// below the sticky bar thanks to scroll-padding-top in the CSS. With reduced
-// motion it jumps straight there.
+// In-page links (nav, avatar): a slow, eased glide to the section. The
+// browser's own smooth scroll is short and quick, so the scroll is animated
+// here: 1.3–2s depending on distance, easing in and out. The section lands
+// below the sticky bar (the scroll-padding-top set in the CSS). Touching or
+// wheeling the page cancels it; with reduced motion it jumps straight there.
 (() => {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  const root = document.documentElement;
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);   // ease-in-out cubic
+  let raf = 0;
+
+  function stop() {
+    cancelAnimationFrame(raf); raf = 0;
+    root.style.scrollBehavior = "";
+    removeEventListener("wheel", stop); removeEventListener("touchstart", stop); removeEventListener("keydown", stop);
+  }
+
+  function glideTo(target) {
+    stop();
+    const pad = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+    const max = root.scrollHeight - innerHeight;
+    const from = scrollY;
+    const to = Math.max(0, Math.min(max, target.getBoundingClientRect().top + scrollY - pad));
+    const dist = Math.abs(to - from);
+    if (reduce.matches || dist < 2) return scrollTo(0, to);
+    const duration = Math.min(2000, 1300 + dist * 0.15);
+    root.style.scrollBehavior = "auto";   // per-frame scrollTo must not be smoothed again
+    addEventListener("wheel", stop, { passive: true });
+    addEventListener("touchstart", stop, { passive: true });
+    addEventListener("keydown", stop);
+    const t0 = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      scrollTo(0, from + (to - from) * ease(t));
+      if (t < 1) raf = requestAnimationFrame(step); else stop();
+    };
+    raf = requestAnimationFrame(step);
+  }
+
   document.addEventListener("click", (e) => {
     const link = e.target.closest('a[href^="#"]');
     if (!link || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
@@ -269,7 +302,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     const target = id ? document.getElementById(id) : null;
     if (!target) return;
     e.preventDefault();
-    target.scrollIntoView({ behavior: reduce.matches ? "auto" : "smooth", block: "start" });
+    glideTo(target);
     history.pushState(null, "", "#" + id);
   });
 })();
