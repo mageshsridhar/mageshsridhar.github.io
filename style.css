@@ -492,8 +492,7 @@ a { color: inherit; }
 /* Hero entrance, once on page load, in two groups: the first three lines rise
    in together, then the last three (the wordmark among them). The wordmark's
    ball starts bouncing once it has landed (its delay="1600" attribute), then
-   the Email button follows. Meanwhile a light purple shimmer passes through the
-   letters of the name. The .intro class is added by the head script only when
+   the Email button follows. The .intro class is added by the head script only when
    reduced motion is off. */
 @keyframes hero-rise {
   from { opacity: 0; transform: translateY(12px); filter: blur(3px); }
@@ -504,19 +503,3 @@ a { color: inherit; }
 }
 .intro .hero-copy > :nth-child(n + 4) { --d: 700ms; }   /* "plus a keen…", wordmark, "and creating…" */
 .intro .hero .cta-row { --d: 1500ms; }
-
-/* Shimmer: the name is painted with a gradient clipped to its letters. The
-   gradient is wide, so only a band of it shows; sliding it across moves a light
-   purple glint through the text, ending on plain text color. */
-@keyframes name-shimmer {
-  from { background-position: 100% 0; }
-  to   { background-position: 0 0; }
-}
-.intro .hero-line strong {
-  --shine: #7c3aed; --shine-core: #a78bfa;
-  color: transparent;
-  background: linear-gradient(100deg, var(--text) 40%, var(--shine) 46%, var(--shine-core) 50%, var(--shine) 54%, var(--text) 60%) 0 0 / 300% 100%;
-  -webkit-background-clip: text; background-clip: text;
-  animation: name-shimmer 1.8s cubic-bezier(.45, 0, .25, 1) 800ms both;
-}
-[data-theme="dark"].intro .hero-line strong { --shine: #a78bfa; --shine-core: #ddd6fe; }
