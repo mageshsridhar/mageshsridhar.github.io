@@ -15,6 +15,7 @@
  * on it, and both fade back on the ball's bounce on the "t" after the crossbar wave. Set the accent with the CSS variable
  * `--animations-accent` (default #7c3aed).
  * Respects prefers-reduced-motion and pauses when scrolled out of view.
+ * Optional `delay="ms"` holds the first frame before the loop starts.
  */
 (() => {
   const FPS = 100, FRAMES = 620;           // 6.2 second loop
@@ -187,10 +188,11 @@
       this.render(0);
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      this.start = performance.now();
+      // Optional `delay` attribute (ms): hold the first frame before the loop starts
+      this.start = performance.now() + (parseFloat(this.getAttribute("delay")) || 0);
       const loop = (now) => {
         this.raf = requestAnimationFrame(loop);
-        if (this.visible === false) return;
+        if (this.visible === false || now < this.start) return;
         this.render((((now - this.start) / 1000) * FPS) % FRAMES);
       };
       this.raf = requestAnimationFrame(loop);

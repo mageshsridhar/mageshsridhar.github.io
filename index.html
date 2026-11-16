@@ -20,6 +20,8 @@
       try { saved = localStorage.getItem("theme"); } catch (e) {}
       const system = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       document.documentElement.dataset.theme = saved || system;
+      // Hero entrance plays once on load; skipped with reduced motion (and without JS)
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro");
     })();
   </script>
 </head>
@@ -48,7 +50,7 @@
         <h1>iOS Developer</h1>
         <p class="hero-line">with 5+ years of experience,</p>
         <p class="hero-line">plus a keen passion for micro</p>
-        <animations-word class="hero-word"></animations-word>
+        <animations-word class="hero-word" delay="1050"></animations-word>
         <p class="hero-sub">and creating fluid user interfaces.</p>
       </div>
       <div class="cta-row">
