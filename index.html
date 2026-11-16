@@ -43,7 +43,18 @@
 
   <main>
     <section id="hero" class="hero">
-      <img class="hero-photo" src="assets/hero-960.webp" srcset="assets/hero-800.webp 800w, assets/hero-960.webp 958w" sizes="(min-width: 1000px) min(45vw, 590px), 100vw" fetchpriority="high" alt="Portrait of Magesh Sridhar">
+      <div class="hero-media">
+        <img class="hero-photo" src="assets/hero-960.webp" srcset="assets/hero-800.webp 800w, assets/hero-960.webp 958w" sizes="(min-width: 1000px) min(45vw, 590px), 100vw" fetchpriority="high" alt="Portrait of Magesh Sridhar">
+        <!-- Border ring around the photo -->
+        <svg class="hero-ring" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="hero-ring-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop class="ring-a" offset="0"/><stop class="ring-b" offset=".5"/><stop class="ring-c" offset="1"/>
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" rx="27"/>
+        </svg>
+      </div>
       <div class="hero-text">
       <div class="hero-copy">
         <p class="hero-line">Hello there <span class="wave" role="img" aria-label="waving hand">👋</span></p>
