@@ -473,7 +473,7 @@ a { color: inherit; }
   font: 600 11px/1 var(--sans); letter-spacing: .07em; text-transform: uppercase;
   color: color-mix(in srgb, var(--text) 70%, transparent);
 }
-.made svg { width: 20px; height: auto; aspect-ratio: 530 / 465; flex-shrink: 0; }   /* side-view brain; no negative margins, so nothing gets clipped */
+.made svg { height: 17.5px; width: auto; aspect-ratio: 432 / 512; flex-shrink: 0; }   /* brain icon (SVG Repo); filled, no negative margins so nothing gets clipped */
 .made.ai { color: #7c3aed; }
 [data-theme="dark"] .made.ai { color: #c4b5fd; }
 .slide-text .made + h3 { margin-top: -11px; }   /* sit the label close to its title */
