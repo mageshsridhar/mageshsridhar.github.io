@@ -462,14 +462,15 @@ a { color: inherit; }
 }
 
 /* Contact */
-/* Contact: "Email" (brand colour) and "Connect" (LinkedIn) side by side */
+/* Contact: "Email" and "Connect" (LinkedIn) side by side, both in the same
+   quiet outlined style */
 .contact-cta { margin: 0; }
-.btn-linkedin {
+.btn-outline {
   background: var(--card); color: var(--text);
   border: 1.5px solid var(--line);
 }
-.btn-linkedin:hover { transform: translateY(-1px); border-color: color-mix(in srgb, #0a66c2 45%, var(--line)); }
-.btn-linkedin img { width: 18px; height: 18px; border-radius: 3px; }
+.btn-outline:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--text) 30%, var(--line)); }
+.btn-outline img { width: 18px; height: 18px; border-radius: 3px; }
 
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 32px 16px 48px; }
 
