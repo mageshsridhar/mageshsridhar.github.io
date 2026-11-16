@@ -443,26 +443,49 @@ a { color: inherit; }
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 32px 16px 48px; }
 
 @media (max-width: 600px) {
-  /* Phones: section links live in a menu that drops down under the bar */
-  .nav { gap: 10px; }
-  .menu-toggle { display: block; }
-  .nav nav {
-    position: absolute; top: 100%; left: 0; right: 0;
-    flex-direction: column; gap: 0; overflow: visible;
-    padding: 4px 16px 12px;
-    /* solid: a blur can't work here (the bar's own blur blocks it) */
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 12px 24px -12px rgba(0, 0, 0, .18);
-    visibility: hidden; opacity: 0; transform: translateY(-6px);
-    transition: opacity .2s ease, transform .25s ease, visibility 0s linear .25s;
+  /* Phones: no top bar. A floating frosted circle (the menu button) sits in
+     the top-right corner. The whole nav is laid out as the open panel, and a
+     clip-path cuts it down to just that circle; opening animates the clip, so
+     the circle grows into a rounded panel holding the avatar, the theme switch
+     and the section links, on the same frosted background. */
+  .nav {
+    position: fixed; top: 12px; left: 12px; right: 12px; z-index: 20;
+    display: grid; grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "avatar . theme menu" "links links links links";
+    align-items: center; gap: 0 6px; padding: 0 0 0 14px;
+    border: 0; border-radius: 24px;
+    background: color-mix(in srgb, var(--bg) 62%, transparent);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    clip-path: inset(0 0 calc(100% - 48px) calc(100% - 48px) round 24px);
+    transition: clip-path .5s cubic-bezier(.32, .72, 0, 1);
   }
-  .nav.open nav {
-    visibility: visible; opacity: 1; transform: none;
-    transition: opacity .2s ease, transform .25s ease;
+  .nav.open { clip-path: inset(0 round 24px); }
+  .nav-avatar { grid-area: avatar; }
+  .nav .theme-toggle { grid-area: theme; margin: 0; width: 40px; height: 40px; background: transparent; }
+  .menu-toggle {
+    display: block; grid-area: menu; width: 48px; height: 48px;
+    background: transparent; border-color: color-mix(in srgb, var(--text) 14%, transparent);
+  }
+  .menu-toggle span { left: 15px; }
+  .menu-toggle span:nth-child(1) { top: 17px; }
+  .menu-toggle span:nth-child(2) { top: 22.5px; }
+  .menu-toggle span:nth-child(3) { top: 28px; }
+  .nav nav {
+    grid-area: links; flex-direction: column; gap: 0; overflow: visible;
+    padding: 4px 20px 12px 6px;
   }
   .nav nav a { font-size: 18px; padding: 14px 0; }
   .nav nav a + a { border-top: 1px solid var(--line); }
+  /* everything but the button fades in once the panel has started to open */
+  .nav-avatar, .nav .theme-toggle, .nav nav {
+    opacity: 0; visibility: hidden;
+    transition: opacity .15s ease, visibility 0s linear .15s;
+  }
+  .nav.open .nav-avatar, .nav.open .theme-toggle, .nav.open nav {
+    opacity: 1; visibility: visible;
+    transition: opacity .3s ease .12s, visibility 0s;
+  }
   .hero-photo { height: min(40vh, calc((100vw - 32px) * 1.3)); }
   .arrow { display: none; }
   .section { padding: 56px 16px; }
@@ -470,6 +493,7 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .nav, .nav * { transition: none !important; }
 }
 
 /* Sections below the hero use their own font pair (set in :root). Re-pointing

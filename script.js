@@ -197,8 +197,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
   videos.forEach((v) => io.observe(v));
 })();
 
-// Phone menu: the button opens the section links under the bar. It closes on
-// a link tap, Escape, a tap outside, or when the screen gets wider.
+// Phone menu: the floating button morphs into a panel with the avatar, theme
+// switch and section links. It closes on a link tap, Escape, a tap outside, or
+// when the screen gets wider.
 (() => {
   const header = document.querySelector(".nav");
   const btn = document.querySelector(".menu-toggle");
@@ -217,7 +218,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     // keyboard users (Enter/Space give detail 0) land on the first link
     if (isOpen() && e.detail === 0) nav.querySelector("a").focus({ preventScroll: true });
   });
-  nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+  header.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });   // section links and the avatar
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && isOpen()) { setOpen(false); btn.focus(); }
   });
