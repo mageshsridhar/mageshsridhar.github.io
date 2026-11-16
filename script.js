@@ -155,7 +155,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (reduce.matches || getComputedStyle(track).overflowX !== "auto") return;
     const mid = track.scrollLeft + track.clientWidth / 2;
     slides.forEach((s) => {
-      const p = Math.max(-1, Math.min(1, (s.offsetLeft + s.offsetWidth / 2 - mid) / (s.offsetWidth + 12)));
+      const p = Math.max(-1, Math.min(1, (s.offsetLeft + s.offsetWidth / 2 - mid) / (s.offsetWidth + 8)));
       s.style.setProperty("--p", p.toFixed(3));
       s.style.setProperty("--ap", Math.abs(p).toFixed(3));
     });

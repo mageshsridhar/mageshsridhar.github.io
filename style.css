@@ -233,9 +233,9 @@ a { color: inherit; }
    slide into the centre. --ap (distance from the centre: 0 centred, 1 one card
    away) is set in script.js. */
 @media (max-width: 899px) {
-  .carousel { --cw: min(68vw, 440px); }
+  .carousel { --cw: min(84vw, 540px); }
   .track {
-    position: relative; gap: 12px; margin: 0 -16px; scroll-snap-type: x mandatory;
+    position: relative; gap: 8px; margin: 0 -16px; scroll-snap-type: x mandatory;
     padding: 4px calc(50vw - var(--cw) / 2) 8px;
   }
   /* Each card sits in a plain wrapper that does the snapping: browsers measure
@@ -248,7 +248,7 @@ a { color: inherit; }
   .track .slide {
     flex: 1; min-width: 0; position: relative; overflow: hidden; scroll-snap-align: none;
     /* side cards sit a little smaller and grow to full size as they reach the centre */
-    transform: scale(calc(1 - var(--ap, 0) * .08));
+    transform: scale(calc(1 - var(--ap, 0) * .05));
     filter: blur(calc(var(--ap, 0) * 5px));
     opacity: calc(1 - var(--ap, 0) * .25);
     will-change: transform, filter;
