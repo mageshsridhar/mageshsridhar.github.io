@@ -473,7 +473,7 @@ a { color: inherit; }
   font: 600 11px/1 var(--sans); letter-spacing: .07em; text-transform: uppercase;
   color: color-mix(in srgb, var(--text) 70%, transparent);
 }
-.made svg { width: 13px; height: 13px; flex-shrink: 0; }
+.made svg { width: 17px; height: 17px; flex-shrink: 0; margin: -3px 0; }
 .made.ai { color: #7c3aed; }
 [data-theme="dark"] .made.ai { color: #c4b5fd; }
 .slide-text .made + h3 { margin-top: -6px; }   /* sit the label close to its title */
