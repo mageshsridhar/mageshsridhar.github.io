@@ -12,7 +12,7 @@
  * Color follows the CSS `color` property; size follows the element's width.
  * The ball and the "t" pick up an accent color for part of the loop: the ball turns
  * the accent on its first bounce on the first "i", the "t" turns when the ball lands
- * on it, and both fade back when the ball lands on the second "i". Set the accent with the CSS variable
+ * on it, and both fade back on the ball's bounce on the "t" after the crossbar wave. Set the accent with the CSS variable
  * `--animations-accent` (default #7c3aed).
  * Respects prefers-reduced-motion and pauses when scrolled out of view.
  */
@@ -42,12 +42,13 @@
   //   ball: turns on its first bounce on the first "i" (it squashes against the stem
   //         at frame 66) and stays accent through the flight and the landing
   //   "t":  turns as the ball lands on it (the stem squashes at frame ~230)
-  //   both fade back as the ball lands on the second "i" at the end of the loop
+  //   both go back to the original color on the ball's bounce on the "t" after the
+  //   crossbar wave (squash at frame ~500), just before it jumps to the second "i"
   const TINT = {
-    dot:      { up: [60, 74],   down: [600, 620] },
-    tStem:    { up: [220, 240], down: [600, 620] },
-    barLeft:  { up: [220, 240], down: [600, 620] },
-    barRight: { up: [220, 240], down: [600, 620] },
+    dot:      { up: [60, 74],   down: [490, 510] },
+    tStem:    { up: [220, 240], down: [490, 510] },
+    barLeft:  { up: [220, 240], down: [490, 510] },
+    barRight: { up: [220, 240], down: [490, 510] },
   };
   const smooth = (a, b, f) => {
     const t = Math.min(1, Math.max(0, (f - a) / (b - a)));
