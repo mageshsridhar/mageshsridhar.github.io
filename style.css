@@ -111,10 +111,13 @@ a { color: inherit; }
   .hero-text .hero-word { margin-left: calc(var(--w) * -0.007); } /* cancel the "a"'s side bearing */
   .hero-text .cta-row { justify-content: flex-start; }
 }
-/* Same size as the other hero lines ("plus a keen passion for micro") */
+/* Same size as the other hero lines ("plus a keen passion for micro"), and the
+   same visual gap below "animations" as between those lines (~0.52em from one
+   line's baseline to the next line's ascenders). The 3px offsets the empty
+   strip under the wordmark's letters. */
 .hero-sub {
   font-size: clamp(18px, 2.4vw, 24px); font-weight: 600; letter-spacing: -0.04em;
-  line-height: 1.3; margin-top: 2px;
+  line-height: 1.3; margin-top: calc(0.3em - 3px);
 }
 
 /* Wide screens: photo and text side by side so the intro and the
