@@ -197,7 +197,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   videos.forEach((v) => io.observe(v));
 })();
 
-// Phone menu: the floating button morphs into a panel with the avatar, theme
+// Phone menu: the floating button grows into a panel with the avatar, theme
 // switch and section links. It closes on a link tap, Escape, a tap outside, or
 // when the screen gets wider.
 (() => {
@@ -206,7 +206,15 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const nav = document.getElementById("site-nav");
   if (!btn || !nav) return;
 
+  // the panel's open height, measured at its open width
+  function measure() {
+    header.classList.add("measuring");
+    header.style.setProperty("--open-h", header.offsetHeight + "px");
+    header.classList.remove("measuring");
+  }
+
   function setOpen(open) {
+    if (open) measure();
     header.classList.toggle("open", open);
     btn.setAttribute("aria-expanded", open);
     btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
