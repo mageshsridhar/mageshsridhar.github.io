@@ -143,9 +143,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
     mark();
   }
 
-  // 3D cards: each card gets --p, its distance from the centre in card widths
+  // Each card gets --p, its distance from the centre in card widths
   // (0 = centred, -1 = one card to the left), and --ap, the same without the
-  // sign. CSS turns, shrinks and blurs the cards by those amounts.
+  // sign. CSS shrinks and blurs the side cards by that amount.
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   let raf = 0;
   function depth() {
@@ -156,7 +156,6 @@ document.getElementById("year").textContent = new Date().getFullYear();
       const p = Math.max(-1, Math.min(1, (s.offsetLeft + s.offsetWidth / 2 - mid) / (s.offsetWidth + 12)));
       s.style.setProperty("--p", p.toFixed(3));
       s.style.setProperty("--ap", Math.abs(p).toFixed(3));
-      s.style.zIndex = Math.round(10 - Math.abs(p) * 5);   // centre card on top
     });
   }
 
