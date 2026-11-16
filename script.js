@@ -161,14 +161,21 @@ document.getElementById("year").textContent = new Date().getFullYear();
     });
   }
 
-  // Only read the position back once scrolling has settled (swipes / trackpad)
+  // The dot follows the card nearest the centre live, every frame of a swipe,
+  // so it changes as soon as the next card passes the middle.
+  let liveRaf = 0;
+  function liveDot() {
+    liveRaf = 0;
+    const i = nearest();
+    if (i !== current) { current = i; mark(); }
+  }
+
   function onScroll() {
     if (!raf) raf = requestAnimationFrame(depth);
+    if (!liveRaf) liveRaf = requestAnimationFrame(liveDot);
+    // and once more after scrolling settles, in case the last frame was missed
     clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => {
-      current = nearest();
-      mark();
-    }, 120);
+    settleTimer = setTimeout(liveDot, 120);
   }
   addEventListener("resize", () => { if (!raf) raf = requestAnimationFrame(depth); });
 

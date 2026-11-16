@@ -242,7 +242,7 @@ a { color: inherit; }
 }
 .dots button::before {
   content: ""; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--text); opacity: .18; transition: opacity .3s, transform .3s, background-color .3s;
+  background: var(--text); opacity: .18; transition: opacity .15s, transform .15s, background-color .15s;
 }
 .dots button[aria-selected="true"]::before { background: var(--dot, var(--text)); opacity: 1; transform: scale(1.25); }
 
