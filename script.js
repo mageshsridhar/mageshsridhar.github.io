@@ -35,7 +35,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 (() => {
   const img = document.querySelector(".hero-photo");
   if (!img) return;
-  const EYE_Y = 0.333; // eye line as a fraction of the (cropped) photo's height
+  const EYE_Y = 0.333;  // eye line as a fraction of the (cropped) photo's height
+  const HAIR_Y = 0.079; // top of the hair, same units
 
   function frame() {
     const W = img.clientWidth, H = img.clientHeight;
@@ -44,7 +45,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
     const scale = Math.max(W / iw, H / ih);   // object-fit: cover
     const overflow = ih * scale - H;          // how much photo is cropped vertically
     if (overflow <= 0) return;
-    const shift = Math.min(Math.max(EYE_Y * ih * scale - H / 3, 0), overflow);
+    let shift = Math.max(EYE_Y * ih * scale - H / 3, 0);
+    // On wide frames that would cut into the hair: keep a little room above the head
+    shift = Math.min(shift, Math.max(HAIR_Y * ih * scale - H * 0.04, 0), overflow);
     img.style.objectPosition = `50% ${(shift / overflow) * 100}%`;
   }
 
