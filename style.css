@@ -176,11 +176,11 @@ a { color: inherit; }
 
 /* Sections */
 .section { max-width: 1000px; margin: 0 auto; padding: 72px 16px; text-align: center; }
-/* Section titles: small, all caps, evenly tracked (Inter at 600; capitals
+/* Section titles: all caps, bold, evenly tracked (Inter at 700; capitals
    need wide letter-spacing to read cleanly at this size) */
 .section h2 {
-  font-family: var(--sans); font-weight: 600;
-  font-size: 16px; line-height: 1.2; margin-bottom: 32px;
+  font-family: var(--sans); font-weight: 700;
+  font-size: 20px; line-height: 1.2; margin-bottom: 36px;
   text-transform: uppercase; letter-spacing: .26em;
   margin-right: -.26em;   /* cancel the trailing letter-space so it stays centred */
 }
