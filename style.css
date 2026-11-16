@@ -5,7 +5,12 @@
   --line: #ececec;
   --card: #ffffff;
   --chip-border: #222222;
-  --accent: #6e5494;
+  /* Brand colour: the taupe of the sweater in the hero photo (sampled ~#72625d).
+     --shirt is the accent itself; --accent fills solid buttons (white text);
+     --accent-ink is text on a light shirt tint. Dark mode lightens them. */
+  --shirt: #72625d;
+  --accent: #72625d;
+  --accent-ink: #4f423e;
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   --sans: "Poppins", system-ui, -apple-system, sans-serif;
   --serif: "Prata", Georgia, serif;
@@ -26,6 +31,9 @@
   --card: #18181b;
   --chip-border: #d0d0d0;
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shirt: #b5a39c;
+  --accent: #7d6b65;
+  --accent-ink: #dccfc9;
   color-scheme: dark;
 }
 [data-theme="dark"] .logo, [data-theme="dark"] .certs img { background: #f5f5f5; }
@@ -120,9 +128,8 @@ a { color: inherit; }
   width: var(--w); margin: calc(var(--w) * -0.19) auto 0;
   position: relative; z-index: 1; pointer-events: none;
   color: var(--text);
-  --animations-accent: #7c3aed;   /* color the ball and the "t" turn mid-loop */
+  --animations-accent: var(--shirt);   /* colour the ball and the "t" turn mid-loop */
 }
-[data-theme="dark"] .hero-word { --animations-accent: #a78bfa; }
 
 /* Desktop (photo and intro side by side): left-aligned intro.
    iPad and phones, where the intro sits under the photo, stay centered. */
@@ -164,15 +171,14 @@ a { color: inherit; }
 .btn svg { width: 18px; height: 18px; }
 .btn-primary, .gh { background: var(--accent); color: #fff; }
 .btn-primary:hover, .gh:hover { transform: translateY(-1px); filter: brightness(1.1); }
-/* Hero Email button: the same light purple as the Apple Music Lyrics card
-   (#8b5cf6 at 12% over the card color), with deep purple text. */
+/* Hero Email button: a light tint of the shirt colour with deeper shirt-toned
+   text and border (both themes follow the --shirt / --accent-ink tokens). */
 .hero .btn-primary {
-  background: color-mix(in srgb, #8b5cf6 12%, var(--card));
-  color: #6d28d9;
-  border: 1.5px solid color-mix(in srgb, #8b5cf6 45%, var(--card));
+  background: color-mix(in srgb, var(--shirt) 14%, var(--card));
+  color: var(--accent-ink);
+  border: 1.5px solid color-mix(in srgb, var(--shirt) 45%, var(--card));
 }
-.hero .btn-primary:hover { background: color-mix(in srgb, #8b5cf6 20%, var(--card)); filter: none; }
-[data-theme="dark"] .hero .btn-primary { color: #c4b5fd; }
+.hero .btn-primary:hover { background: color-mix(in srgb, var(--shirt) 22%, var(--card)); filter: none; }
 
 /* Sections */
 .section { max-width: 1000px; margin: 0 auto; padding: 72px 16px; text-align: center; }

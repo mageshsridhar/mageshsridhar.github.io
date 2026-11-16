@@ -13,7 +13,7 @@
  * The ball and the "t" pick up an accent color for part of the loop: the ball turns
  * the accent on its first bounce on the first "i", the "t" turns when the ball lands
  * on it, and both fade back on the ball's bounce on the "t" after the crossbar wave. Set the accent with the CSS variable
- * `--animations-accent` (default #7c3aed).
+ * `--animations-accent` (default #72625d).
  * Respects prefers-reduced-motion and pauses when scrolled out of view.
  * Optional `delay="ms"` holds the first frame before the loop starts.
  */
@@ -175,7 +175,7 @@
         const els = [make(p)];
         if (TINT[p.id]) {
           const acc = make(p);
-          acc.style.color = "var(--animations-accent, #7c3aed)";
+          acc.style.color = "var(--animations-accent, #72625d)";
           acc.style.opacity = 0;
           els.push(acc);
         }
