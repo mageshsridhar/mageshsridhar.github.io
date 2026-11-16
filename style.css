@@ -144,8 +144,12 @@ a { color: inherit; }
 .btn svg { width: 18px; height: 18px; }
 .btn-primary, .gh { background: var(--accent); color: #fff; }
 .btn-primary:hover, .gh:hover { transform: translateY(-1px); filter: brightness(1.1); }
-.btn-secondary { border: 1.5px solid var(--text); color: var(--text); }
-.btn-secondary:hover { background: var(--text); color: var(--bg); }
+/* Hero Email button: a gradient built around the wordmark accent (#7c3aed,
+   the purple the ball and "t" turn), light at top-left to deep at bottom-right. */
+.hero .btn-primary {
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 50%, #5b21b6 100%);
+  box-shadow: 0 6px 16px -6px rgba(124, 58, 237, .55);
+}
 
 /* Sections */
 .section { max-width: 1000px; margin: 0 auto; padding: 72px 16px; text-align: center; }
