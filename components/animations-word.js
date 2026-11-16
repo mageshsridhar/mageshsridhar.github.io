@@ -10,6 +10,10 @@
  * Usage:  <script src="components/animations-word.js"></script>
  *         <animations-word></animations-word>
  * Color follows the CSS `color` property; size follows the element's width.
+ * The ball and the "t" pick up an accent color for part of the loop: the ball turns
+ * the accent when it lands on the "t", the "t" follows, and both fade back when the
+ * ball lands on the second "i". Set the accent with the CSS variable
+ * `--animations-accent` (default #7c3aed).
  * Respects prefers-reduced-motion and pauses when scrolled out of view.
  */
 (() => {
@@ -32,6 +36,25 @@
   ];
 
   const NS = "http://www.w3.org/2000/svg";
+
+  // Accent color timeline, in animation frames (100 fps). Each part fades to the
+  // accent over [rise start, rise end] and back over [fall start, fall end].
+  //   ball: turns as it lands on the "t" (frame ~240), back as it lands on the second "i"
+  //   "t":  turns just after the ball lands, back at the same time as the ball
+  const TINT = {
+    dot:      { up: [236, 252], down: [600, 620] },
+    tStem:    { up: [250, 276], down: [600, 620] },
+    barLeft:  { up: [250, 276], down: [600, 620] },
+    barRight: { up: [250, 276], down: [600, 620] },
+  };
+  const smooth = (a, b, f) => {
+    const t = Math.min(1, Math.max(0, (f - a) / (b - a)));
+    return t * t * (3 - 2 * t);
+  };
+  const tintAmount = (id, f) => {
+    const t = TINT[id];
+    return t ? smooth(...t.up, f) * (1 - smooth(...t.down, f)) : 0;
+  };
 
   // cubic-bezier easing, same curve definition as CSS
   function bezier(x1, y1, x2, y2) {
@@ -129,7 +152,7 @@
       letters.setAttribute("d", GLYPHS);
       g.append(letters);
 
-      this.nodes = PARTS.map((p) => {
+      const make = (p) => {
         let el;
         if (p.kind === "rect") el = document.createElementNS(NS, "rect");
         if (p.kind === "ellipse") el = document.createElementNS(NS, "ellipse");
@@ -140,8 +163,20 @@
           el.setAttribute("stroke-width", p.width);
           el.setAttribute("stroke-linecap", p.cap);
         }
-        g.append(el);
         return el;
+      };
+      // Each part is [base, accentCopy?]. The accent copy sits on top of the base
+      // and fades in, so the color change needs no color math.
+      this.nodes = PARTS.map((p) => {
+        const els = [make(p)];
+        if (TINT[p.id]) {
+          const acc = make(p);
+          acc.style.color = "var(--animations-accent, #7c3aed)";
+          acc.style.opacity = 0;
+          els.push(acc);
+        }
+        g.append(...els);
+        return els;
       });
       svg.append(g);
       this.append(svg);
@@ -167,22 +202,29 @@
 
     render(f) {
       PARTS.forEach((p, n) => {
-        const el = this.nodes[n];
         const [x, y] = sample(p.pos, f);
-        if (p.kind === "rect") {
-          const [w, h] = sample(p.size, f);
-          el.setAttribute("x", x - w / 2);
-          el.setAttribute("y", y - h / 2);
-          el.setAttribute("width", w);
-          el.setAttribute("height", h);
-        } else if (p.kind === "ellipse") {
-          const [w, h] = sample(p.size, f);
-          el.setAttribute("rx", w / 2);
-          el.setAttribute("ry", h / 2);
-          el.setAttribute("transform", `translate(${x} ${y}) rotate(${p.rot ? sample(p.rot, f) : 0})`);
-        } else {
-          el.setAttribute("d", pathD(sample(p.path, f)));
-          el.setAttribute("transform", `translate(${x} ${y})`);
+        const size = p.size && sample(p.size, f);
+        const d = p.kind === "stroke" && pathD(sample(p.path, f));
+        for (const el of this.nodes[n]) {
+          if (p.kind === "rect") {
+            el.setAttribute("x", x - size[0] / 2);
+            el.setAttribute("y", y - size[1] / 2);
+            el.setAttribute("width", size[0]);
+            el.setAttribute("height", size[1]);
+          } else if (p.kind === "ellipse") {
+            el.setAttribute("rx", size[0] / 2);
+            el.setAttribute("ry", size[1] / 2);
+            el.setAttribute("transform", `translate(${x} ${y}) rotate(${p.rot ? sample(p.rot, f) : 0})`);
+          } else {
+            el.setAttribute("d", d);
+            el.setAttribute("transform", `translate(${x} ${y})`);
+          }
+        }
+        const [base, acc] = this.nodes[n];
+        if (acc) {
+          const m = tintAmount(p.id, f);
+          acc.style.opacity = m;
+          base.style.opacity = m > 0.999 ? 0 : 1;   // fully accent: drop the base so no dark edge shows
         }
       });
     }

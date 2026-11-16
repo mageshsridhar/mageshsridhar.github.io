@@ -100,7 +100,9 @@ a { color: inherit; }
   width: var(--w); margin: calc(var(--w) * -0.19) auto 0;
   position: relative; z-index: 1; pointer-events: none;
   color: var(--text);
+  --animations-accent: #7c3aed;   /* color the ball and the "t" turn mid-loop */
 }
+[data-theme="dark"] .hero-word { --animations-accent: #a78bfa; }
 
 /* Desktop (photo and intro side by side): left-aligned intro.
    iPad and phones, where the intro sits under the photo, stay centered. */
