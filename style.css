@@ -462,12 +462,14 @@ a { color: inherit; }
 }
 
 /* Contact */
-.contact-lede { color: var(--muted); margin-bottom: 20px; }
-.contact-cta { margin: 0 0 28px; }
-.socials { display: flex; justify-content: center; gap: 20px; }
-.socials a { transition: transform .2s; }
-.socials a:hover { transform: translateY(-3px) scale(1.05); }
-.socials img { width: 52px; height: 52px; border-radius: 12px; }
+/* Contact: "Email" (brand colour) and "Connect" (LinkedIn) side by side */
+.contact-cta { margin: 0; }
+.btn-linkedin {
+  background: var(--card); color: var(--text);
+  border: 1.5px solid var(--line);
+}
+.btn-linkedin:hover { transform: translateY(-1px); border-color: color-mix(in srgb, #0a66c2 45%, var(--line)); }
+.btn-linkedin img { width: 18px; height: 18px; border-radius: 3px; }
 
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 32px 16px 48px; }
 
