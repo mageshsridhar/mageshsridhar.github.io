@@ -290,6 +290,28 @@ a { color: inherit; }
   /* iPad arrows sit over the peeking cards, so give them a solid chip */
   .arrow { background: var(--card); box-shadow: 0 2px 10px rgba(0, 0, 0, .14); }
   .arrow:hover, [data-theme="dark"] .arrow { background: var(--card); }
+
+  /* "View on GitHub" takes its card's colour: a stronger tint of the card
+     with deep text in that hue (light mode) or light text (dark mode), the
+     same recipe as the hero's Email button. The GitHub mark is redrawn in
+     the text colour via a mask, since the icon file itself is white. */
+  .track .gh {
+    background: color-mix(in srgb, var(--tint) 24%, var(--card));
+    color: color-mix(in srgb, var(--tint) 50%, #000);
+    border: 1.5px solid color-mix(in srgb, var(--tint) 45%, var(--card));
+  }
+  [data-theme="dark"] .track .gh {
+    background: color-mix(in srgb, var(--tint) 26%, var(--card));
+    color: color-mix(in srgb, var(--tint) 45%, #fff);
+    border-color: color-mix(in srgb, var(--tint) 50%, var(--card));
+  }
+  .track .gh:hover { filter: brightness(.97); }
+  .track .gh > img { display: none; }
+  .track .gh::before {
+    content: ""; width: 18px; height: 18px; flex-shrink: 0; background: currentColor;
+    -webkit-mask: url("assets/github.svg") center / contain no-repeat;
+            mask: url("assets/github.svg") center / contain no-repeat;
+  }
 }
 
 /* Desktop: bento grid of project cards instead of the carousel */
