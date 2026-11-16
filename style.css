@@ -198,7 +198,9 @@ a { color: inherit; }
   transition: background .2s;
 }
 .arrow:hover { background: rgba(0, 0, 0, 0.16); }
-.arrow img { width: 16px; filter: invert(1); }   /* white icon file -> dark in light mode */
+/* The icon file is mostly padding (a 40px box around a small chevron), so it's
+   shown at full size to give a ~15px chevron. White file -> dark in light mode. */
+.arrow img { width: 40px; filter: invert(1); }
 .prev { left: 0; }
 .next { right: 0; }
 
