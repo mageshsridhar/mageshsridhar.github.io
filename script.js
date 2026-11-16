@@ -143,31 +143,33 @@ document.getElementById("year").textContent = new Date().getFullYear();
     mark();
   }
 
-  // Parallax: each card gets --p, its distance from the centre in card widths
-  // (0 = centred, -1 = one card to the left). CSS shifts the text and device
-  // by a share of that, so they lag behind the card as it slides.
+  // 3D cards: each card gets --p, its distance from the centre in card widths
+  // (0 = centred, -1 = one card to the left), and --ap, the same without the
+  // sign. CSS turns, shrinks and blurs the cards by those amounts.
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   let raf = 0;
-  function parallax() {
+  function depth() {
     raf = 0;
     if (reduce.matches || getComputedStyle(track).overflowX !== "auto") return;
     const mid = track.scrollLeft + track.clientWidth / 2;
     slides.forEach((s) => {
-      const p = (s.offsetLeft + s.offsetWidth / 2 - mid) / (s.offsetWidth + 12);
-      s.style.setProperty("--p", Math.max(-1.5, Math.min(1.5, p)).toFixed(3));
+      const p = Math.max(-1, Math.min(1, (s.offsetLeft + s.offsetWidth / 2 - mid) / (s.offsetWidth + 12)));
+      s.style.setProperty("--p", p.toFixed(3));
+      s.style.setProperty("--ap", Math.abs(p).toFixed(3));
+      s.style.zIndex = Math.round(10 - Math.abs(p) * 5);   // centre card on top
     });
   }
 
   // Only read the position back once scrolling has settled (swipes / trackpad)
   function onScroll() {
-    if (!raf) raf = requestAnimationFrame(parallax);
+    if (!raf) raf = requestAnimationFrame(depth);
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => {
       current = nearest();
       mark();
     }, 120);
   }
-  addEventListener("resize", () => { if (!raf) raf = requestAnimationFrame(parallax); });
+  addEventListener("resize", () => { if (!raf) raf = requestAnimationFrame(depth); });
 
   document.querySelector(".prev").addEventListener("click", () => go(current - 1));
   document.querySelector(".next").addEventListener("click", () => go(current + 1));
@@ -177,7 +179,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (e.key === "ArrowLeft") go(current - 1);
   });
   mark();
-  parallax();
+  depth();
 })();
 
 // Project demos: each video loads and plays only while its card is on screen,
