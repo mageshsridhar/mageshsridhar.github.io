@@ -179,6 +179,15 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }
   addEventListener("resize", () => { if (!raf) raf = requestAnimationFrame(depth); });
 
+  // Where supported (Chrome/Edge), the browser announces which card a swipe
+  // will snap to as soon as it knows, before the card has moved there:
+  // switch the dot right away.
+  const wrappers = [...track.querySelectorAll(".snap")];
+  track.addEventListener("scrollsnapchanging", (e) => {
+    const i = wrappers.indexOf(e.snapTargetInline);
+    if (i >= 0 && i !== current) { current = i; mark(); }
+  });
+
   document.querySelector(".prev").addEventListener("click", () => go(current - 1));
   document.querySelector(".next").addEventListener("click", () => go(current + 1));
   track.addEventListener("scroll", onScroll, { passive: true });
