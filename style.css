@@ -179,7 +179,7 @@ a { color: inherit; }
 }
 .slide h3 { font-size: 32px; font-weight: 700; }
 .slide p { color: var(--text); max-width: 36ch; text-wrap: balance; }   /* card text is all the primary colour */
-.badge { width: 160px; }
+.badge { width: 120px; }
 .gh img { width: 18px; height: 18px; }
 
 .device { position: relative; margin-top: 10px; }
