@@ -125,20 +125,49 @@ document.getElementById("year").textContent = new Date().getFullYear();
     [...dots.children].forEach((d, i) => d.setAttribute("aria-selected", i === current));
   }
 
+  // The slide nearest the middle of the track
+  function nearest() {
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, dist = Infinity;
+    slides.forEach((s, i) => {
+      const d = Math.abs(s.offsetLeft + s.offsetWidth / 2 - mid);
+      if (d < dist) { dist = d; best = i; }
+    });
+    return best;
+  }
+
   function go(i) {
     current = (i + slides.length) % slides.length;
-    track.scrollTo({ left: current * track.clientWidth, behavior: "smooth" });
+    const s = slides[current];
+    track.scrollTo({ left: s.offsetLeft + s.offsetWidth / 2 - track.clientWidth / 2, behavior: "smooth" });
     mark();
+  }
+
+  // Parallax: each card gets --p, its distance from the centre in card widths
+  // (0 = centred, -1 = one card to the left). CSS shifts the text and device
+  // by a share of that, so they lag behind the card as it slides.
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+  let raf = 0;
+  function parallax() {
+    raf = 0;
+    if (reduce.matches || getComputedStyle(track).overflowX !== "auto") return;
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    slides.forEach((s) => {
+      const p = (s.offsetLeft + s.offsetWidth / 2 - mid) / (s.offsetWidth + 12);
+      s.style.setProperty("--p", Math.max(-1.5, Math.min(1.5, p)).toFixed(3));
+    });
   }
 
   // Only read the position back once scrolling has settled (swipes / trackpad)
   function onScroll() {
+    if (!raf) raf = requestAnimationFrame(parallax);
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => {
-      current = Math.round(track.scrollLeft / track.clientWidth);
+      current = nearest();
       mark();
     }, 120);
   }
+  addEventListener("resize", () => { if (!raf) raf = requestAnimationFrame(parallax); });
 
   document.querySelector(".prev").addEventListener("click", () => go(current - 1));
   document.querySelector(".next").addEventListener("click", () => go(current + 1));
@@ -148,6 +177,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (e.key === "ArrowLeft") go(current - 1);
   });
   mark();
+  parallax();
 })();
 
 // Project demos: each video loads and plays only while its card is on screen,
