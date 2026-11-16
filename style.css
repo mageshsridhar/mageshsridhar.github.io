@@ -490,7 +490,7 @@ a { color: inherit; }
 .slide-text .made + h3 { margin-top: -11px; }   /* sit the label close to its title */
 .bento .slide-text .made + h3 { margin-top: -3px; }
 
-/* Hero entrance, once on page load, in two groups: the first three lines rise
+/* Hero entrance, once on page load, in two groups: the first four lines rise
    in together, then the last three (the wordmark among them). The wordmark's
    ball starts bouncing once it has landed (its delay="1600" attribute), then
    the Email button follows. The .intro class is added by the head script only when
@@ -502,5 +502,5 @@ a { color: inherit; }
   animation: hero-rise 1s cubic-bezier(.22, 1, .36, 1) both;
   animation-delay: var(--d, 0ms);
 }
-.intro .hero-copy > :nth-child(n + 4) { --d: 700ms; }   /* "plus a keen…", wordmark, "and creating…" */
+.intro .hero-copy > :nth-child(n + 5) { --d: 700ms; }   /* "plus a keen…", wordmark, "and creating…" */
 .intro .hero .cta-row { --d: 1500ms; }
