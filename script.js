@@ -146,3 +146,17 @@ document.getElementById("year").textContent = new Date().getFullYear();
   });
   mark();
 })();
+
+// Project demos: each video loads and plays only while its card is on screen,
+// and pauses when it scrolls away. With reduced motion, the poster frame stays.
+(() => {
+  const videos = document.querySelectorAll("video.screen");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) target.play().catch(() => {});   // e.g. Low Power Mode: poster stays
+      else target.pause();
+    });
+  }, { rootMargin: "200px" });
+  videos.forEach((v) => io.observe(v));
+})();

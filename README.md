@@ -15,6 +15,6 @@ Then open http://localhost:8765.
 - Content lives in `index.html` (projects, experience, certifications, hobbies, contact).
 - Styles are in `style.css`; the carousel, theme toggle, card glow and photo framing are in `script.js`.
 - The animated "animations" wordmark in the hero is a code-only web component, `components/animations-word.js` (`<animations-word>`), with no GIF or Lottie file.
-- Images and project GIFs are in `assets/`.
+- Images and project demo videos are in `assets/`. Demos are H.264 MP4s (with a WebP poster frame) that play only while on screen; the hero photo and device frames are WebP. `hero.jpg` is kept for link previews (`og:image`).
 
 Push to `main` and GitHub Pages redeploys automatically.
