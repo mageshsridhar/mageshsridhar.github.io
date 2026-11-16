@@ -452,7 +452,7 @@ a { color: inherit; }
     width: 48px; height: 48px; overflow: hidden;
     display: grid; grid-template-columns: auto 1fr auto 46px;   /* last column: room for the button */
     grid-template-rows: 46px auto;
-    grid-template-areas: ". . theme menu" "links avatar avatar avatar";
+    grid-template-areas: "theme . . menu" "links avatar avatar avatar";
     align-items: center; gap: 0 4px; padding: 0;
     border: 1px solid var(--line); border-radius: 24px;
     background: var(--card);
@@ -472,7 +472,7 @@ a { color: inherit; }
     object-fit: contain; object-position: bottom center;
   }
   .nav .theme-toggle {
-    grid-area: theme; margin: 0; width: 40px; height: 40px;
+    grid-area: theme; margin: 0 0 0 20px; width: 40px; height: 40px;   /* left edge in line with the links */
     background: transparent; border-color: var(--line);
   }
   /* pinned to the top-right corner so it stays put while the panel grows */
