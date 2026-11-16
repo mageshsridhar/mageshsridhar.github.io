@@ -180,9 +180,9 @@ a { color: inherit; }
    need wide letter-spacing to read cleanly at this size) */
 .section h2 {
   font-family: var(--sans); font-weight: 600;
-  font-size: 13px; line-height: 1.2; margin-bottom: 28px;
-  text-transform: uppercase; letter-spacing: .18em;
-  margin-right: -.18em;   /* cancel the trailing letter-space so it stays centred */
+  font-size: 16px; line-height: 1.2; margin-bottom: 32px;
+  text-transform: uppercase; letter-spacing: .26em;
+  margin-right: -.26em;   /* cancel the trailing letter-space so it stays centred */
 }
 
 /* Carousel */
