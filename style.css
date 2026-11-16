@@ -202,20 +202,21 @@ a { color: inherit; }
 .prev { left: 0; }
 .next { right: 0; }
 
+/* Page dots: quiet, no backing pill. The active dot takes the colour of the
+   card on screen (--dot is set from that card's --tint in script.js). */
 .dots {
-  display: inline-flex; margin-top: 20px;
-  padding: 0 6px; border-radius: 999px; background: rgba(127, 127, 127, 0.2);
+  display: inline-flex; margin-top: 16px;
 }
-/* 32px tap area around an 8px dot */
+/* 24×32px tap area around a 6px dot */
 .dots button {
-  width: 32px; height: 32px; border: none; background: none; cursor: pointer;
+  width: 24px; height: 32px; border: none; background: none; cursor: pointer;
   display: grid; place-items: center;
 }
 .dots button::before {
-  content: ""; width: 8px; height: 8px; border-radius: 50%;
-  background: var(--text); opacity: .3; transition: opacity .2s, transform .2s;
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--text); opacity: .18; transition: opacity .3s, transform .3s, background-color .3s;
 }
-.dots button[aria-selected="true"]::before { opacity: 1; transform: scale(1.25); }
+.dots button[aria-selected="true"]::before { background: var(--dot, var(--text)); opacity: 1; transform: scale(1.25); }
 
 .slide-text { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 

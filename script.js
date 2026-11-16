@@ -123,6 +123,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   function mark() {
     [...dots.children].forEach((d, i) => d.setAttribute("aria-selected", i === current));
+    // the active dot takes the colour of the card on screen
+    dots.style.setProperty("--dot", getComputedStyle(slides[current]).getPropertyValue("--tint"));
   }
 
   // The slide nearest the middle of the track
