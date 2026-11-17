@@ -891,9 +891,13 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .made.ai { color: #7c3aed; }
 [data-theme="dark"] .made.ai { color: #c4b5fd; }
 /* The label sits as far above its title as the title sits above its
-   description (about 19px of clear space on desktop and iPad, 23px on phones,
-   where the type is a little larger). */
-.slide-text .made + h3 { margin-top: 1px; }   /* phones */
+   description (about 19px of clear space on desktop and iPad, 14px on phones). */
+.slide-text .made + h3 { margin-top: 1px; }
+/* phones: tighter and still equal, about 14px of clear space for both gaps */
+@media (max-width: 600px) {
+  .track.bento .slide-text .made + h3 { margin-top: -2px; }
+  .slide-text h3 + p { margin-top: -9px; }
+}
 .bento .slide-text .made + h3 { margin-top: 6px; }   /* desktop (iPad has its own rule) */
 
 /* Hero entrance, once on page load, in two groups: the first four lines rise
