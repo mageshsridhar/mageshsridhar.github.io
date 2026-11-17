@@ -454,7 +454,7 @@ a { color: inherit; }
 }
 .cert a:hover { background: var(--text); color: var(--bg); }
 
-/* Hobbies */
+/* Interests */
 .chips { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 560px; margin: 0 auto; }
 .chips li {
   border: 1.5px solid var(--chip-border); border-radius: 999px;
