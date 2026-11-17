@@ -333,3 +333,36 @@ document.getElementById("year").textContent = new Date().getFullYear();
   el.parentElement.hidden = false;
   setInterval(tick, 20000);
 })();
+
+// Phones and tablets (no hover): each certificate gets a little swing on its
+// nail as you scroll it into view, as if the scroll had nudged the wall. The
+// push follows the scroll direction, and it settles back to its usual tilt.
+(() => {
+  if (!matchMedia("(hover: none)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const frames = document.querySelectorAll(".hang");
+  if (!frames.length || !("animate" in Element.prototype)) return;
+
+  let lastY = scrollY, dir = 1;
+  addEventListener("scroll", () => { dir = scrollY >= lastY ? 1 : -1; lastY = scrollY; }, { passive: true });
+
+  function swing(el) {
+    if (el._swinging) return;
+    el._swinging = true;
+    const tilt = parseFloat(getComputedStyle(el).getPropertyValue("--tilt")) || 0;
+    // damped pendulum around the resting tilt: amplitude 3.2°, ~2.2 swings
+    const steps = 48, frames = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const a = dir * 3.2 * Math.exp(-3.4 * t) * Math.sin(2 * Math.PI * 2.2 * t);
+      frames.push({ transform: `rotate(${(tilt + a).toFixed(3)}deg)` });
+    }
+    frames[steps] = { transform: `rotate(${tilt}deg)` };
+    const anim = el.animate(frames, { duration: 2200, easing: "linear" });
+    anim.onfinish = anim.oncancel = () => { el._swinging = false; };
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) swing(e.target); });
+  }, { threshold: 0.45 });
+  frames.forEach((f) => io.observe(f));
+})();
