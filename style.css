@@ -665,8 +665,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
    what they are yet. */
 .dock-wrap { display: flex; justify-content: center; }
 .dock {
-  --icon: clamp(52px, 13vw, 68px);
-  --gap: clamp(10px, 2.6vw, 18px);
+  --icon: clamp(52px, 14vw, 104px);   /* phones stay ~52px so five fit; desktop and iPad get 104px */
+  --gap: clamp(10px, 2.8vw, 24px);
   list-style: none; display: flex; gap: var(--gap);
   padding: calc(var(--gap) * .9); border-radius: calc(var(--icon) * .5);
   background: color-mix(in srgb, var(--text) 6%, transparent);
@@ -688,9 +688,9 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .app-name {
   position: absolute; top: calc(100% + var(--gap) * .9 + 10px); left: 50%; transform: translateX(-50%);
   width: calc(var(--icon) + var(--gap)); text-align: center; text-wrap: balance;
-  font-size: clamp(9.5px, 2.55vw, 12px); line-height: 1.25; font-weight: 500; color: var(--muted);
+  font-size: clamp(9.5px, 2.55vw, 14px); line-height: 1.25; font-weight: 500; color: var(--muted);
 }
-.dock-wrap { padding-bottom: 48px; }   /* room for the labels (up to two lines) */
+.dock-wrap { padding-bottom: clamp(48px, 7.3vw, 56px); }   /* room for the labels (up to two lines) */
 
 /* each app's colours */
 .app-percussion  { --app-bg: linear-gradient(160deg, #ff8a4c, #e2412f); }
