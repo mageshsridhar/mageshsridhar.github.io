@@ -320,10 +320,9 @@ a, button { -webkit-tap-highlight-color: transparent; }
 }
 
 /* iPad (tablet) carousel: every card has the same layout. Text top-left, a
-   compact "GitHub ↗" button pinned top-right, and the device centred and
-   larger than on desktop, cropped by the card's bottom edge in the same
-   proportion as its desktop card (phones lose about half their width's worth
-   of height, Color Theory 53%, Dynamic Scroll 27%, the watch about 12%). */
+   compact "GitHub ↗" button pinned top-right, and the device centred, larger
+   than on desktop, with its top at the same height on every card (164px down,
+   where the Dynamic Scroll phone sits) and running off the bottom edge. */
 @media (min-width: 601px) and (max-width: 899px) {
   .track .slide {
     --pw: 256px;   /* phone width on iPad (228px on desktop) */
@@ -333,18 +332,19 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .track .slide-text { align-items: flex-start; gap: 8px; padding-right: 110px; }   /* clear of the button */
   .track .slide h3 { font-size: 24px; line-height: 1.2; }
   .track .slide p { font-size: 15px; max-width: 36ch; text-wrap: pretty; }
-  .track .badge { width: 120px; }
+  /* Color Theory's WWDC badge sits in the right gutter under the button, so its
+     text block is no taller than the others' */
+  .track .b-ct .badge { position: absolute; top: 72px; right: 22px; width: 96px; }
   /* compact button in the top-right corner, level with the label */
   .track .slide > .gh {
     position: absolute; top: 20px; right: 20px; z-index: 2; margin: 0;
     min-height: 40px; padding: 8px 14px; font-size: 14px; gap: 6px;
   }
   .track .gh-view { display: none; }
-  /* devices centred, bigger, same crop proportions as desktop */
-  .track .phone { width: var(--pw); margin: auto auto calc(var(--pw) * -0.504); }
-  .track .b-ct .phone { margin-bottom: calc(var(--pw) * -0.53); }
-  .track .b-ds .phone { margin-bottom: calc(var(--pw) * -0.27); }
-  .track .watch { width: auto; height: 440px; aspect-ratio: 600 / 940; flex: 0 1 auto; min-height: 0; margin: auto auto -54px; }
+  /* devices centred, all starting at the same height */
+  .track .device { position: absolute; top: 164px; left: 50%; margin: 0; transform: translateX(-50%); }
+  .track .phone { width: var(--pw); }
+  .track .watch { width: auto; height: 480px; aspect-ratio: 600 / 940; }
 }
 
 
