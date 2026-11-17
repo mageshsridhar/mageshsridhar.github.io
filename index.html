@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
   <script>
     // Set the theme before the page paints so there is no flash of the wrong colors
     (() => {
@@ -189,21 +189,34 @@
 
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <div class="cta-row contact-cta">
-        <a class="btn btn-outline" href="mailto:magesh.sridhar.05@gmail.com">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-          Email
-        </a>
-        <a class="btn btn-outline" href="https://www.linkedin.com/in/mageshsridhar/" target="_blank" rel="noopener" aria-label="Connect on LinkedIn">
-          <img src="assets/linkedin.svg" alt="">
-          Connect
-        </a>
+      <!-- Contact card, styled after an iPhone Contacts card -->
+      <div class="contact-card">
+        <div class="cc-photo"><img src="assets/avatar.png" alt="" width="271" height="354"></div>
+        <p class="cc-name">Magesh Sridhar</p>
+        <p class="cc-role">iOS Developer</p>
+        <div class="cc-actions">
+          <a class="cc-action" href="mailto:magesh.sridhar.05@gmail.com">
+            <span class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+            <span class="cc-label">mail</span>
+          </a>
+          <button class="cc-action cc-copy" type="button" data-email="magesh.sridhar.05@gmail.com" aria-label="Copy email address">
+            <span class="cc-icon">
+              <svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              <svg class="i-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+            </span>
+            <span class="cc-label" aria-live="polite">copy email</span>
+          </button>
+          <a class="cc-action" href="https://www.linkedin.com/in/mageshsridhar/" target="_blank" rel="noopener" aria-label="Connect on LinkedIn">
+            <span class="cc-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3A1.97 1.97 0 1 0 5.25 7a1.97 1.97 0 0 0 0-3.94zM20.44 13.4c0-3.06-1.63-4.48-3.8-4.48a3.29 3.29 0 0 0-2.97 1.63V8.5h-3.37V20h3.37v-5.95c0-1.57.3-3.09 2.24-3.09 1.92 0 1.94 1.8 1.94 3.19V20h3.38z"/></svg></span>
+            <span class="cc-label">connect</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">© <span id="year"></span> Magesh Sridhar</footer>
   <script src="components/animations-word.js?v=2"></script>
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
