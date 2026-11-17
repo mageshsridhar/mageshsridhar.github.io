@@ -460,8 +460,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
 
 /* Experience: the journey as an Apple Maps route. A street map with the three
    stops (ASU, IQVIA, Salesforce) on street corners; as you scroll, the title and
-   map stay pinned for two extra screens while the route draws along the streets
-   and each stop pops in. Pins and cards are placed by script.js. */
+   map stay pinned for two extra screens: the route draws along the streets over
+   the first (each stop pops in), and the finished route holds for the second. Pins and cards are placed by script.js. */
 /* stage = section title (about 60px with its gap) + map, pinned as one */
 .xp-scroll { --map-h: 720px; --stage-h: calc(var(--map-h) + 60px); height: calc(var(--stage-h) + 200vh); }
 .xp-stage { position: sticky; top: max(16px, calc((100vh - var(--stage-h)) / 2)); }
