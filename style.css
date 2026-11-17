@@ -334,10 +334,11 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .track .slide p { font-size: 15px; max-width: 36ch; text-wrap: pretty; }
   /* Color Theory's WWDC badge sits in the right gutter under the button, so its
      text block is no taller than the others' */
-  .track .b-ct .badge { position: absolute; top: 72px; right: 22px; width: 96px; }
-  /* compact button in the top-right corner, level with the label */
+  .track .b-ct .badge { position: absolute; top: 80px; right: 30px; width: 96px; }
+  /* compact button in the top-right corner: its top lines up with the top of
+     the label group, and it sits the same 28px in from the side */
   .track .slide > .gh {
-    position: absolute; top: 20px; right: 20px; z-index: 2; margin: 0;
+    position: absolute; top: 28px; right: 28px; z-index: 2; margin: 0;
     min-height: 40px; padding: 8px 14px; font-size: 14px; gap: 6px;
   }
   .track .gh-view { display: none; }
