@@ -660,7 +660,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 }
 
 /* Interests: an iPhone-style Dock. Five app icons (rounded squares with a
-   gradient each; the animated glyphs go inside .app-icon later) on a frosted,
+   gradient each, holding an animated line-art glyph) on a frosted,
    rounded shelf. Names sit under the shelf, since the icons alone don't say
    what they are yet. */
 .dock-wrap { display: flex; justify-content: center; }
@@ -678,6 +678,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .app-icon {
   display: grid; place-items: center; width: var(--icon); height: var(--icon);
   border-radius: 22.5%;   /* iOS icon corner */
+  overflow: hidden;       /* the glyphs run off the edges (launch, sunrise, tumbleweed) */
   background: var(--app-bg);
   box-shadow: inset 0 0 0 .5px rgba(255, 255, 255, .25), 0 2px 6px rgba(0, 0, 0, .18);
   transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
@@ -694,9 +695,113 @@ a, button { -webkit-tap-highlight-color: transparent; }
 /* each app's colours */
 .app-percussion  { --app-bg: linear-gradient(160deg, #ff8a4c, #e2412f); }
 .app-photography { --app-bg: linear-gradient(160deg, #5b5b63, #1f1f24); }
-.app-design      { --app-bg: linear-gradient(160deg, #c26cff, #6d4cff); }
+.app-design      { --app-bg: linear-gradient(160deg, #5ab8ff, #2f6bff); }
 .app-parks       { --app-bg: linear-gradient(160deg, #5fbf7a, #1f7a4d); }
-.app-sunsets     { --app-bg: linear-gradient(170deg, #ffb35c, #ff6a5c 55%, #a64bb0); }
+/* Sunsets: a mesh-style sky (indigo top-left, lavender, pink, rose, a warm
+   orange glow where the sun meets the horizon at y 40 of 64), easing into blue
+   water that carries a soft reflection of the glow. */
+.app-sunsets {
+  --app-bg:
+    radial-gradient(34% 16% at 50% 66%, rgba(255, 176, 120, .75), transparent 75%),
+    radial-gradient(58% 34% at 50% 60%, rgba(255, 158, 98, .9), transparent 72%),
+    radial-gradient(60% 40% at 88% 44%, rgba(238, 122, 172, .95), transparent 72%),
+    radial-gradient(55% 40% at 8% 50%, rgba(226, 108, 142, .85), transparent 72%),
+    radial-gradient(75% 48% at 82% 6%, rgba(184, 146, 232, .95), transparent 72%),
+    radial-gradient(70% 50% at 0% 0%, rgba(86, 92, 184, .95), transparent 72%),
+    linear-gradient(180deg, #9a86dc 0%, #c98fd6 30%, #ea8aa6 52%, #e98a8a 60%, #5f74cc 70%, #34509f 86%, #243b86 100%);
+}
+
+/* Dock icons: white line art on each tile, 64x64 viewBox, looping on their
+   own. Camera blades/shutter and the tumbleweed's hops are driven by script.js;
+   everything else is CSS. Names are scoped to .app-icon and keyframes are
+   prefixed di- so nothing collides with the rest of the site. */
+.app-icon svg { width: 100%; height: 100%; display: block; overflow: hidden; }
+/* ---------- Shared line-art style ---------- */
+.app-icon .ln { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.app-icon .thin { stroke-width: 1.5; }
+.app-icon .anim, .app-icon .anim * { transform-box: fill-box; transform-origin: center; }
+
+/* ---------- Percussion: drum kit from the front; a fill, then crash + kick ---------- */
+.app-icon .kit .drum, .app-icon .kit .bass, .app-icon .kit .glow, .app-icon .kit .cymbal, .app-icon .kit .spark { animation-duration: 3s; animation-iteration-count: infinite; animation-fill-mode: both; }
+.app-icon .kit .drum { transform-origin: 50% 100%; animation-name: di-bump; animation-timing-function: ease-out; }
+.app-icon .kit .snare, .app-icon .kit .snare .glow { animation-name: di-bump2; }
+.app-icon .kit .glow { fill: #fff; stroke: none; opacity: 0; animation-name: di-glow; }
+.app-icon .kit .snare .glow { animation-name: di-glow2; }
+.app-icon .kit .cymbal { transform-origin: 50% 100%; animation-name: di-wobble; }
+.app-icon .kit .bass { transform-origin: center; animation-name: di-kick; }
+.app-icon .kit .spark { opacity: 0; animation-name: di-spark; }
+@keyframes di-bump { 0% { transform: none; } 2% { transform: translateY(1px) scale(1.05, .9); } 9%, 100% { transform: none; } }
+@keyframes di-bump2 { 0% { transform: none; } 2% { transform: translateY(1px) scale(1.05, .9); } 6% { transform: none; } 8.7% { transform: translateY(1px) scale(1.05, .9); } 14%, 100% { transform: none; } }
+@keyframes di-glow { 0% { opacity: 0; } 1.5% { opacity: .6; } 12%, 100% { opacity: 0; } }
+@keyframes di-glow2 { 0% { opacity: 0; } 1.5% { opacity: .6; } 6% { opacity: .1; } 8.2% { opacity: .6; } 18%, 100% { opacity: 0; } }
+@keyframes di-kick { 0% { transform: scale(1); } 2% { transform: scale(1.08); } 12%, 100% { transform: scale(1); } }
+@keyframes di-wobble { 0% { transform: rotate(0); } 2% { transform: rotate(-14deg); } 10% { transform: rotate(9deg); } 18% { transform: rotate(-5deg); } 27% { transform: rotate(2deg); } 36%, 100% { transform: rotate(0); } }
+@keyframes di-spark { 0% { opacity: 0; transform: scale(.6); } 2% { opacity: 1; } 16%, 100% { opacity: 0; transform: scale(1.35); } }
+
+/* ---------- Graphic design: pen tool draws a triangle, it fills and launches ---------- */
+.app-icon .pen-tool, .app-icon .tri, .app-icon .tri-move, .app-icon .anchor { animation-duration: 3.2s; animation-iteration-count: infinite; animation-fill-mode: both; }
+.app-icon .pen-tool { animation-name: di-pen-move; animation-timing-function: cubic-bezier(.45,0,.25,1); transform-box: view-box; transform-origin: 0 0; }
+.app-icon .tri { stroke-dasharray: 100; animation-name: di-tri-draw, di-tri-fill; animation-timing-function: cubic-bezier(.45,0,.25,1); fill: #fff; }
+.app-icon .tri-move { animation-name: di-tri-launch; transform-box: view-box; transform-origin: 0 0; }
+.app-icon .anchor { fill: #4a90ff; stroke: #fff; stroke-width: 1.4; }
+.app-icon .anchor.a { animation-name: di-anc-a; }
+.app-icon .anchor.b { animation-name: di-anc-b; }
+.app-icon .anchor.c { animation-name: di-anc-c; }
+@keyframes di-pen-move {
+  0%, 6%    { transform: translate(32px, 15px); }
+  22%, 26%  { transform: translate(47px, 43px); }
+  42%, 46%  { transform: translate(17px, 43px); }
+  62%, 100% { transform: translate(32px, 15px); }
+}
+@keyframes di-tri-draw {
+  0%, 6%    { stroke-dashoffset: 100; }
+  22%, 26%  { stroke-dashoffset: 66.1; }
+  42%, 46%  { stroke-dashoffset: 33.9; }
+  62%, 100% { stroke-dashoffset: 0; }
+}
+@keyframes di-tri-fill { 0%, 63% { fill-opacity: 0; } 70%, 100% { fill-opacity: 1; } }
+@keyframes di-tri-launch {
+  /* Still out of frame when the loop restarts; it only moves back down at 4%,
+     once the outline and fill have already been cleared, so it can't flash
+     in the middle (the move and the clear may land on different frames). */
+  0%, 4% { transform: translateY(-70px); }
+  4.1% { transform: translateY(0); }
+  70% { transform: translateY(0); animation-timing-function: ease-out; }
+  73% { transform: translateY(2px); animation-timing-function: cubic-bezier(.45, 0, .7, .7); }
+  92%, 100% { transform: translateY(-70px); }
+}
+@keyframes di-anc-a { 0% { opacity: 0; } 3%, 64% { opacity: 1; } 70%, 100% { opacity: 0; } }
+@keyframes di-anc-b { 0%, 21% { opacity: 0; } 24%, 64% { opacity: 1; } 70%, 100% { opacity: 0; } }
+@keyframes di-anc-c { 0%, 41% { opacity: 0; } 44%, 64% { opacity: 1; } 70%, 100% { opacity: 0; } }
+
+/* ---------- National parks: three saguaros, a tumbleweed rolls past ---------- */
+.app-icon .cactus { vector-effect: non-scaling-stroke; }
+.app-icon .tw-x { transform-box: view-box; transform-origin: 0 0; animation: di-roll-x 4s linear infinite both; }
+.app-icon .tw-r { animation: di-spin .9s linear infinite; }
+@keyframes di-roll-x { 0% { transform: translate(-9px, 45px); } 78%, 100% { transform: translate(73px, 45px); } }
+
+/* ---------- Sunsets: sun drops in from the top and sinks below the horizon ---------- */
+.app-icon .sun { animation: di-sun-path 5s infinite both; transform-box: view-box; transform-origin: 0 0; }
+.app-icon .rays { animation: di-spin 14s linear infinite; }
+.app-icon .water { animation: di-shimmer 5s ease-in-out infinite both; }
+.app-icon .water.w2 { animation-delay: .25s; }
+@keyframes di-sun-path {
+  0%   { transform: translateY(-17px); animation-timing-function: cubic-bezier(.25,.4,.45,1); }
+  62%  { transform: translateY(38px); animation-timing-function: linear; }
+  100% { transform: translateY(58px); }
+}
+@keyframes di-spin { to { transform: rotate(360deg); } }
+@keyframes di-shimmer { 0%, 50% { opacity: .35; transform: scaleX(.7); } 72% { opacity: 1; transform: scaleX(1.12); } 100% { opacity: .35; transform: scaleX(.7); } }
+
+/* Off screen, the loops pause (script.js toggles .is-live on the Dock). */
+.dock:not(.is-live) .app-icon * { animation-play-state: paused; }
+/* Reduced motion: hold one still frame per icon instead of looping */
+@media (prefers-reduced-motion: reduce) {
+  .app-icon * { animation-play-state: paused !important; }
+  .app-icon .pen-tool, .app-icon .tri, .app-icon .tri-move, .app-icon .anchor { animation-delay: -2.24s; }   /* filled triangle, pen at its tip */
+  .app-icon .tw-x { animation-delay: -1.7s; }   /* tumbleweed mid-way across */
+  .app-icon .sun { animation-delay: -2.6s; }    /* sun just above the horizon */
+}
 
 /* Contact */
 

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=61">
+  <link rel="stylesheet" href="style.css?v=62">
   <script>
     // Set the theme before the page paints so there is no flash of the wrong colors
     (() => {
@@ -234,23 +234,143 @@
       <div class="dock-wrap">
         <ul class="dock">
           <li class="dock-app app-percussion">
-            <span class="app-icon" aria-hidden="true"><!-- animated icon goes here --></span>
+            <span class="app-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" class="kit anim" aria-hidden="true">
+              <!-- stands (behind the drums) -->
+              <g class="ln thin">
+                <path d="M13 22 V37"/><path d="M51 18 V35"/>
+                <path d="M14 45 V53 M14 53 L10.5 56 M14 53 L17.5 56"/>
+                <path d="M47 50.5 L45.5 55 M55 50.5 L56.5 55"/>
+                <path d="M26 54 L23 56.5 M38 54 L41 56.5"/>
+              </g>
+              <!-- hi-hat (closed, stays still) -->
+              <g class="ln" style="stroke-width:1.8"><ellipse cx="13" cy="19.6" rx="7" ry="1.3"/><ellipse cx="13" cy="22.2" rx="7" ry="1.3"/></g>
+              <!-- crash: hit last, swings on its stand -->
+              <g class="cymbal" style="animation-delay:1.15s">
+                <ellipse class="ln" style="stroke-width:1.8" cx="51" cy="16.5" rx="8" ry="1.7"/>
+                <circle cx="51" cy="15.2" r="1.3" fill="#fff"/>
+              </g>
+              <g class="spark ln thin" style="animation-delay:1.15s">
+                <path d="M51 10 V7.5"/><path d="M45.5 11.5 L44 9.5"/><path d="M56.5 11.5 L58 9.5"/>
+              </g>
+              <!-- rack toms -->
+              <g class="drum" style="animation-delay:.65s">
+                <ellipse class="glow" cx="25" cy="25.5" rx="5.5" ry="1.8" style="animation-delay:.65s"/>
+                <path class="ln" d="M19.5 25.5 V31 A5.5 1.8 0 0 0 30.5 31 V25.5"/>
+                <ellipse class="ln" cx="25" cy="25.5" rx="5.5" ry="1.8"/>
+              </g>
+              <g class="drum" style="animation-delay:.8s">
+                <ellipse class="glow" cx="39" cy="25.5" rx="5.5" ry="1.8" style="animation-delay:.8s"/>
+                <path class="ln" d="M33.5 25.5 V31 A5.5 1.8 0 0 0 44.5 31 V25.5"/>
+                <ellipse class="ln" cx="39" cy="25.5" rx="5.5" ry="1.8"/>
+              </g>
+              <!-- bass drum: kicks with the crash -->
+              <g class="bass" style="animation-delay:1.15s">
+                <circle class="glow" cx="32" cy="44" r="10" style="animation-delay:1.15s; opacity:0"/>
+                <circle class="ln" cx="32" cy="44" r="10"/>
+                <circle class="ln thin" cx="32" cy="44" r="3.4"/>
+              </g>
+              <!-- snare: two strokes to start the fill -->
+              <g class="drum snare" style="animation-delay:.25s">
+                <ellipse class="glow" cx="14" cy="39" rx="5.8" ry="1.6" style="animation-delay:.25s"/>
+                <path class="ln" d="M8.2 39 V43.5 A5.8 1.6 0 0 0 19.8 43.5 V39"/>
+                <ellipse class="ln" cx="14" cy="39" rx="5.8" ry="1.6"/>
+              </g>
+              <!-- floor tom -->
+              <g class="drum" style="animation-delay:.95s">
+                <ellipse class="glow" cx="51" cy="37" rx="6" ry="1.8" style="animation-delay:.95s"/>
+                <path class="ln" d="M45 37 V50 A6 1.8 0 0 0 57 50 V37"/>
+                <ellipse class="ln" cx="51" cy="37" rx="6" ry="1.8"/>
+              </g>
+            </svg>
+            </span>
             <span class="app-name">Percussion</span>
           </li>
           <li class="dock-app app-photography">
-            <span class="app-icon" aria-hidden="true"><!-- animated icon goes here --></span>
+            <span class="app-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" class="camera" aria-hidden="true">
+              <defs><clipPath id="dock-shutter-clip"><rect x="0" y="0" width="64" height="21"/></clipPath></defs>
+              <!-- shutter button, pressed into the body -->
+              <g clip-path="url(#dock-shutter-clip)">
+                <rect class="ln shutter" x="13" y="17.6" width="7.5" height="5" rx="1.2" style="stroke-width:1.8"/>
+              </g>
+              <!-- small, light click lines once the shutter button has gone down -->
+              <g class="ln click" opacity="0" style="stroke-width:1.1">
+                <path d="M16.75 14 V12.2"/><path d="M12.6 14.9 L11.4 13.7"/><path d="M20.9 14.9 L22.1 13.7"/>
+              </g>
+              <path class="ln" d="M24 21 L27 16 H37 L40 21"/>
+              <rect class="ln" x="8.5" y="21" width="47" height="30" rx="6"/>
+              <rect class="flash-window" x="44.5" y="25" width="6.5" height="3.6" rx="1" fill="#fff" fill-opacity=".0" stroke="#fff" stroke-width="1.5"/>
+              <circle class="ln" cx="32" cy="36.5" r="11.5"/>
+              <circle class="ln thin" cx="32" cy="36.5" r="8.5"/>
+              <path class="ln thin blades" d=""/>
+            </svg>
+            </span>
             <span class="app-name">Photography</span>
           </li>
           <li class="dock-app app-design">
-            <span class="app-icon" aria-hidden="true"><!-- animated icon goes here --></span>
+            <span class="app-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <g class="tri-move">
+                <path class="ln tri" pathLength="100" d="M32 15 L47 43 L17 43 Z"/>
+              </g>
+              <rect class="anchor a" x="30.2" y="13.2" width="3.6" height="3.6"/>
+              <rect class="anchor b" x="45.2" y="41.2" width="3.6" height="3.6"/>
+              <rect class="anchor c" x="15.2" y="41.2" width="3.6" height="3.6"/>
+              <!-- pen tool, tip at its origin, leaning up-right -->
+              <g class="pen-tool">
+                <g transform="rotate(35)">
+                  <path d="M0 0 L-4.2 -7.5 L-3.2 -12.5 H3.2 L4.2 -7.5 Z" fill="#4a90ff" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M0 0 V-5.6" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
+                  <circle cx="0" cy="-7" r="1.2" fill="#fff"/>
+                  <rect x="-3.8" y="-17" width="7.6" height="3.4" rx="1" fill="#4a90ff" stroke="#fff" stroke-width="1.8"/>
+                </g>
+              </g>
+            </svg>
+            </span>
             <span class="app-name">Graphic Design</span>
           </li>
           <li class="dock-app app-parks">
-            <span class="app-icon" aria-hidden="true"><!-- animated icon goes here --></span>
+            <span class="app-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <path id="dock-saguaro" d="M29 50V38H24Q20 38 20 34V28.5A2.5 2.5 0 0 1 25 28.5V33H29V17A3 3 0 0 1 35 17V30H38V24.5A2.5 2.5 0 0 1 43 24.5V31Q43 35 39 35H35V50"/>
+              </defs>
+              <g transform="translate(13 50) scale(.55) translate(-31.5 -50)"><use href="#dock-saguaro" class="ln cactus"/></g>
+              <g transform="translate(31 50) scale(.9) translate(-31.5 -50)"><use href="#dock-saguaro" class="ln cactus"/></g>
+              <g transform="translate(51.5 50) scale(-.66 .66) translate(-31.5 -50)"><use href="#dock-saguaro" class="ln cactus"/></g>
+              <path class="ln" d="M6 50 H58"/>
+              <!-- tumbleweed: rolls in from the left, hops along the ground, exits right -->
+              <g class="tw-x"><g class="tw-y"><g class="tw-r anim">
+                <circle r="4.6" fill="#33925f" stroke="#fff" stroke-width="1.8"/>
+                <path class="ln" style="stroke-width:1.1" d="M-3.2 -1.2 Q0 -4.2 3.4 -0.6 M-3.4 1.6 Q0 4.4 3 1.8 M-1.2 -3.8 Q-3.8 0 -0.8 3.9 M1.4 -3.8 Q4.2 0.2 1.2 3.8"/>
+              </g></g></g>
+            </svg>
+            </span>
             <span class="app-name">National Parks</span>
           </li>
           <li class="dock-app app-sunsets">
-            <span class="app-icon" aria-hidden="true"><!-- animated icon goes here --></span>
+            <span class="app-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs><clipPath id="dock-sky"><rect x="0" y="0" width="64" height="40"/></clipPath></defs>
+              <g clip-path="url(#dock-sky)">
+                <g class="sun">
+                  <g transform="translate(32 0)">
+                    <circle class="ln" r="8"/>
+                    <g class="rays anim">
+                      <g class="ln" style="stroke-width:2">
+                        <path d="M0 -12 V-15"/><path d="M0 12 V15"/><path d="M-12 0 H-15"/><path d="M12 0 H15"/>
+                        <path d="M8.5 8.5 L10.6 10.6"/><path d="M-8.5 8.5 L-10.6 10.6"/><path d="M8.5 -8.5 L10.6 -10.6"/><path d="M-8.5 -8.5 L-10.6 -10.6"/>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <path class="ln" d="M6 40 H58"/>
+              <path class="ln water anim" d="M20 46 H44"/>
+              <path class="ln water w2 anim" d="M26 51.5 H38"/>
+            </svg>
+            </span>
             <span class="app-name">Sunsets</span>
           </li>
         </ul>
@@ -264,6 +384,6 @@
     <p>© <span id="year"></span> Magesh Sridhar <span class="footer-sep" aria-hidden="true">·</span> <a class="made-with" href="https://claude.com/claude-code" target="_blank" rel="noopener">Built with <svg class="claude-mark" viewBox="0 0 12 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="#D97757" d="M2 1h1v1h-1zM2 2h1v1h-1zM2 3h1v1h-1zM2 4h1v1h-1zM2 5h1v1h-1zM3 1h1v1h-1zM3 2h1v1h-1zM3 3h1v1h-1zM3 4h1v1h-1zM3 5h1v1h-1zM4 1h1v1h-1zM4 3h1v1h-1zM4 4h1v1h-1zM4 5h1v1h-1zM5 1h1v1h-1zM5 2h1v1h-1zM5 3h1v1h-1zM5 4h1v1h-1zM5 5h1v1h-1zM6 1h1v1h-1zM6 2h1v1h-1zM6 3h1v1h-1zM6 4h1v1h-1zM6 5h1v1h-1zM7 1h1v1h-1zM7 3h1v1h-1zM7 4h1v1h-1zM7 5h1v1h-1zM8 1h1v1h-1zM8 2h1v1h-1zM8 3h1v1h-1zM8 4h1v1h-1zM8 5h1v1h-1zM9 1h1v1h-1zM9 2h1v1h-1zM9 3h1v1h-1zM9 4h1v1h-1zM9 5h1v1h-1zM0 3h1v1h-1zM1 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM2 6h1v1h-1zM2 7h1v1h-1zM4 6h1v1h-1zM4 7h1v1h-1zM7 6h1v1h-1zM7 7h1v1h-1zM9 6h1v1h-1zM9 7h1v1h-1z"/></svg> Claude Code</a></p>
   </footer>
   <script src="components/animations-word.js?v=2"></script>
-  <script src="script.js?v=12"></script>
+  <script src="script.js?v=13"></script>
 </body>
 </html>

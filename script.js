@@ -473,3 +473,75 @@ document.getElementById("year").textContent = new Date().getFullYear();
   addEventListener("load", build);
   build();
 })();
+
+// Interests Dock icons. Most of the motion is CSS (style.css); this drives the
+// two parts that need geometry or randomness: the camera's shutter press and
+// aperture blades, and the tumbleweed's uneven hops. Everything runs only while
+// the Dock is on screen (it gets .is-live, which also un-pauses the CSS loops).
+(() => {
+  const dock = document.querySelector(".dock");
+  if (!dock) return;
+  const camera = dock.querySelector(".app-photography svg");
+  const tumble = dock.querySelector(".tw-y");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Camera: six blade edges, each from one corner of the opening past the next
+  // corner out to the lens ring; shrinking and turning the opening swings the
+  // blades closed. Pressing the shutter button closes them in the same motion,
+  // the flash fires at the bottom of the press, a light click shows, and
+  // releasing the button opens the blades again.
+  const CX = 32, CY = 36.5, R = 8.5, OPEN = 5.4, SHUT = 1, PERIOD = 3400;
+  const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const ramp = (u, a, b) => Math.min(1, Math.max(0, (u - a) / (b - a)));
+  const blades = camera.querySelector(".blades"), shutter = camera.querySelector(".shutter");
+  const flashWin = camera.querySelector(".flash-window"), click = camera.querySelector(".click");
+  function drawCamera(u) {
+    const k = ease(ramp(u, 0.2, 0.34)) - ease(ramp(u, 0.46, 0.66));
+    const r = OPEN - (OPEN - SHUT) * k;
+    const th = -0.3 + (OPEN - r) * 0.17;
+    const V = [...Array(6)].map((_, i) => [r * Math.cos(th + (i * Math.PI) / 3), r * Math.sin(th + (i * Math.PI) / 3)]);
+    let d = "";
+    for (let i = 0; i < 6; i++) {
+      const [px, py] = V[i], [qx, qy] = V[(i + 1) % 6];
+      let dx = qx - px, dy = qy - py;
+      const L = Math.hypot(dx, dy); dx /= L; dy /= L;
+      const b = px * dx + py * dy, c = px * px + py * py - R * R;
+      const t = -b + Math.sqrt(b * b - c);
+      d += `M${(CX + px).toFixed(2)} ${(CY + py).toFixed(2)}L${(CX + px + dx * t).toFixed(2)} ${(CY + py + dy * t).toFixed(2)}`;
+    }
+    blades.setAttribute("d", d);
+    shutter.setAttribute("transform", `translate(0 ${(k * 1.8).toFixed(2)})`);
+    flashWin.setAttribute("fill-opacity", Math.max(0, 1 - Math.abs(u - 0.37) / 0.04).toFixed(3));
+    const cl = ramp(u, 0.34, 0.46);
+    click.setAttribute("opacity", (cl > 0 && cl < 1 ? 0.7 * (cl < 0.15 ? cl / 0.15 : 1 - (cl - 0.15) / 0.85) : 0).toFixed(3));
+    click.setAttribute("transform", `translate(16.75 15.5) scale(${(0.85 + 0.3 * cl).toFixed(3)}) translate(-16.75 -15.5)`);
+  }
+
+  // Tumbleweed: each bounce gets its own height and length, with the odd low
+  // skip, so the rhythm never repeats.
+  let hop = null;
+  function drawTumble(now) {
+    if (!hop || now >= hop.start + hop.dur) {
+      const skip = Math.random() < 0.3;
+      const start = hop && now - (hop.start + hop.dur) < 100 ? hop.start + hop.dur : now;
+      hop = { start, dur: skip ? 180 + Math.random() * 140 : 380 + Math.random() * 420, h: skip ? 0.6 + Math.random() * 1.2 : 2 + Math.random() * 4.5 };
+    }
+    const p = (now - hop.start) / hop.dur;
+    tumble.setAttribute("transform", `translate(0 ${(-hop.h * 4 * p * (1 - p)).toFixed(2)})`);
+  }
+
+  drawCamera(0);   // a still, open lens until (or unless) the loop runs
+  if (reduce) return;
+
+  let raf = 0, t0 = performance.now();
+  const frame = (now) => {
+    drawCamera(((now - t0) % PERIOD) / PERIOD);
+    drawTumble(now);
+    raf = requestAnimationFrame(frame);
+  };
+  new IntersectionObserver(([entry]) => {
+    dock.classList.toggle("is-live", entry.isIntersecting);
+    cancelAnimationFrame(raf);
+    if (entry.isIntersecting) raf = requestAnimationFrame(frame);
+  }).observe(dock);
+})();
