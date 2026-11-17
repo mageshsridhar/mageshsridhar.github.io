@@ -53,6 +53,10 @@ body {
 }
 img { display: block; max-width: 100%; }
 a { color: inherit; }
+/* Touch: no grey rectangle flashing over rounded buttons and links when tapped;
+   each control shows its own pressed state instead. */
+a, button { -webkit-tap-highlight-color: transparent; }
+.btn:active, .gh:active, .menu-toggle:active, .theme-toggle:active { opacity: .75; }
 
 /* Nav */
 .nav {
@@ -510,8 +514,12 @@ a { color: inherit; }
   display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 999px;
   border: 1.2px solid #4f423e; color: #4f423e; font: 600 14px/1 var(--sans);
   text-decoration: none; white-space: nowrap; transition: background-color .2s, color .2s;
+  -webkit-tap-highlight-color: transparent;   /* no grey box flashing over the pill on touch */
 }
-.p-verify:hover { background: #4f423e; color: var(--paper); }
+/* fill on hover only where there is a real pointer; on touch the "hover" would
+   stick after a tap, so a light pressed tint shows while the finger is down */
+@media (hover: hover) { .p-verify:hover { background: #4f423e; color: var(--paper); } }
+.p-verify:active { background: color-mix(in srgb, #4f423e 14%, transparent); }
 /* issuer logo in a scalloped seal; a foil sheen sweeps across it on hover */
 .seal { position: relative; width: 52px; height: 52px; display: grid; place-items: center; }
 .seal svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: color-mix(in srgb, #72625d 30%, var(--paper)); stroke: var(--rule); stroke-width: 1.5; }
