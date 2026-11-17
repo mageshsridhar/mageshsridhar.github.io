@@ -173,7 +173,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
   transition: transform .15s, filter .15s, background-color .2s, color .2s;
 }
 .btn svg { width: 18px; height: 18px; }
-.btn-logo { width: 18px; height: 18px; border-radius: 4px; }   /* the LinkedIn logo in the Connect button */
 .btn-primary, .gh { background: var(--accent); color: #fff; }
 .btn-primary:hover, .gh:hover { transform: translateY(-1px); filter: brightness(1.1); }
 /* Hero Email button: a light tint of the shirt colour with deeper shirt-toned
