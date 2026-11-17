@@ -307,32 +307,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
   });
 })();
 
-// Contact card: copy the email address, with a tick and "copied" for a moment
+// Footer: the current time in Tempe (Arizona time, no daylight saving),
+// refreshed every 20 seconds. Without JS the line just says where.
 (() => {
-  const btn = document.querySelector(".cc-copy");
-  if (!btn) return;
-  const label = btn.querySelector(".cc-label");
-  let timer;
-  btn.addEventListener("click", async () => {
-    const email = btn.dataset.email;
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch (e) {
-      // older browsers / insecure origins: copy through a hidden text field
-      const t = Object.assign(document.createElement("textarea"), { value: email });
-      t.style.cssText = "position:fixed;opacity:0";
-      document.body.append(t); t.select();
-      try { document.execCommand("copy"); } catch (err) {}
-      t.remove();
-    }
-    btn.classList.add("copied");
-    label.textContent = "copied";
-    btn.setAttribute("aria-label", "Email address copied");
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      btn.classList.remove("copied");
-      label.textContent = "copy email";
-      btn.setAttribute("aria-label", "Copy email address");
-    }, 1800);
-  });
+  const el = document.getElementById("local-time");
+  if (!el) return;
+  const fmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/Phoenix", hour: "numeric", minute: "2-digit" });
+  const tick = () => { el.textContent = fmt.format(new Date()); };
+  tick();
+  el.parentElement.hidden = false;
+  setInterval(tick, 20000);
 })();

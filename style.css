@@ -462,48 +462,10 @@ a { color: inherit; }
 }
 
 /* Contact */
-/* Contact card, after an iPhone Contacts card: memoji in a tinted circle,
-   name, role, and round actions with small labels underneath. */
-.contact-card {
-  max-width: 360px; margin: 0 auto; padding: 32px 24px 26px;
-  background: var(--card); border: 1px solid var(--line); border-radius: 28px;
-  box-shadow: var(--shadow);
-  display: flex; flex-direction: column; align-items: center;
-}
-.cc-photo {
-  width: 112px; height: 112px; border-radius: 50%; overflow: hidden;
-  background: color-mix(in srgb, var(--shirt) 18%, var(--card));
-  display: flex; align-items: flex-end; justify-content: center;
-}
-.cc-photo img { width: 78%; height: auto; }
-.cc-name {
-  margin-top: 16px; font-family: Poppins, sans-serif; font-weight: 700;
-  font-size: 26px; letter-spacing: -0.03em; line-height: 1.15;
-}
-.cc-role { margin-top: 4px; color: var(--muted); font-size: 15px; }
-.cc-actions { display: flex; justify-content: center; gap: 28px; margin-top: 24px; }
-.cc-action {
-  display: flex; flex-direction: column; align-items: center; gap: 7px;
-  background: none; border: 0; padding: 0; cursor: pointer; color: var(--text);
-  text-decoration: none; font: inherit;
-}
-.cc-icon {
-  width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
-  background: color-mix(in srgb, var(--shirt) 16%, var(--card));
-  color: var(--accent-ink);
-  transition: transform .2s ease, background-color .2s ease;
-}
-.cc-icon svg { width: 21px; height: 21px; grid-area: 1 / 1; }
-.cc-action:hover .cc-icon { transform: translateY(-2px); background: color-mix(in srgb, var(--shirt) 26%, var(--card)); }
-.cc-action:active .cc-icon { transform: scale(.94); }
-.cc-label { font-size: 12.5px; font-weight: 500; color: var(--muted); }
-/* copy: the icon swaps to a tick and the label to "copied" for a moment */
-.cc-copy .i-done { opacity: 0; transform: scale(.6); transition: opacity .2s, transform .25s; }
-.cc-copy .i-copy { transition: opacity .2s, transform .25s; }
-.cc-copy.copied .i-copy { opacity: 0; transform: scale(.6); }
-.cc-copy.copied .i-done { opacity: 1; transform: none; }
 
 .footer { text-align: center; color: var(--muted); font-size: 13px; padding: 32px 16px 48px; }
+.footer-where { color: var(--text); font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.footer-time { font-variant-numeric: tabular-nums; }   /* digits keep their width as the minutes tick */
 
 @media (max-width: 600px) {
   /* Phones: no top bar. A floating circle (the menu button) sits in the
