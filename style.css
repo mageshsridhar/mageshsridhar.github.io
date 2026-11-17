@@ -519,8 +519,10 @@ a { color: inherit; }
     grid-area: links; flex-direction: column; gap: 2px; overflow: visible;
     padding: 0 8px 10px;
   }
+  /* all caps, widely tracked, like the section titles */
   .nav nav a {
-    font-size: 18px; padding: 12px; border-radius: 12px;
+    font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: .2em;
+    padding: 14px 12px; border-radius: 12px;
     transition: background-color .2s;
   }
   .nav nav a:active { background: color-mix(in srgb, var(--text) 7%, transparent); }
