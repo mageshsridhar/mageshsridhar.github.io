@@ -366,3 +366,107 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }, { threshold: 0.45 });
   frames.forEach((f) => io.observe(f));
 })();
+
+// Experience map: lays out the streets, puts the stops on corners, routes
+// between them along the streets, and draws the route as you scroll.
+(() => {
+  if (!document.getElementById("xp-map")) return;
+  const NS = "http://www.w3.org/2000/svg";
+  const map = document.getElementById("xp-map");
+  const streets = document.getElementById("xp-streets");
+  const route = document.getElementById("xp-route");
+  const [ahead, edge, line] = route.querySelectorAll("path");
+  const pins = [...map.querySelectorAll(".xp-pin")];
+  const places = [...map.querySelectorAll(".xp-place")];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let len = 1, stopAt = [];
+
+  const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.append(e); return e; };
+
+  // Lay out a small street grid, put the three stops on street corners, and
+  // route between them along the streets (right-angle turns, rounded corners).
+  function build() {
+    const W = map.clientWidth, H = map.clientHeight, phone = W < 520;
+    streets.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    route.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    streets.replaceChildren();
+
+    // street lines: columns (avenues) and rows (streets)
+    const cols = phone ? [0.08, 0.18, 0.62, 0.9].map((f) => Math.round(f * W)) : [0.09, 0.29, 0.47, 0.72, 0.92].map((f) => Math.round(f * W));
+    const rows = [0.26, 0.41, 0.56, 0.71, 0.87].map((f) => Math.round(f * H));
+    const roadW = phone ? 13 : 15;
+
+    // blocks between streets, a couple of them parks and one a lake
+    const xs = [0, ...cols, W], ys = [0, ...rows, H];
+    for (let i = 0; i < xs.length - 1; i++) for (let j = 0; j < ys.length - 1; j++) {
+      const x = xs[i] + roadW / 2 + 4, y = ys[j] + roadW / 2 + 4, w = xs[i + 1] - xs[i] - roadW - 8, h = ys[j + 1] - ys[j] - roadW - 8;
+      if (w < 8 || h < 8) continue;
+      const kind = (i === xs.length - 2 && j === 1) ? "xp-water" : ((i === 3 && j === 3) || (i === 0 && j === 5) || (i === 4 && j === 4)) ? "xp-park" : "xp-block";
+      el("rect", { x, y, width: w, height: h, rx: kind === "xp-water" ? 22 : 8, class: kind }, streets);
+    }
+    const draw = (d, cls) => { el("path", { d, class: "xp-edge " + cls, "stroke-width": roadW + 2 }, streets); el("path", { d, class: "xp-road " + cls, "stroke-width": roadW }, streets); };
+    cols.forEach((x, i) => draw(`M${x} 0V${H}`, i === 1 ? "xp-avenue" : ""));
+    rows.forEach((y) => draw(`M0 ${y}H${W}`, ""));
+    // street names written on the roads themselves (centred in the road, running
+    // along it), on stretches the route, pins and cards don't cover
+    const name = (t, x, y, vertical) => {
+      const n = el("text", { x, y, "text-anchor": "middle", "dominant-baseline": "central",
+        transform: vertical ? `rotate(-90 ${x} ${y})` : "" }, streets);
+      n.textContent = t;
+    };
+    const mid = (a, b) => Math.round((a + b) / 2);
+    name("University Dr", Math.round(W * (phone ? .8 : .82)), rows[1], false);
+    name("Apache Blvd", Math.round(W * (phone ? .8 : .82)), rows[3], false);
+    name("Mill Ave", cols[0], rows[2], true);   // the first avenue, between the route's two turns
+    if (!phone) name("Rural Rd", cols[4], mid(rows[3], rows[4]), true);   // phones: the cards cover that road
+    if (!phone) name("College Ave", cols[3], mid(rows[0], rows[1]), true);
+
+    // the stops sit on street corners; the route runs down the first avenue,
+    // across, down the second, and back across to the destination
+    const [c1, c2] = [cols[0], phone ? cols[1] : cols[2]];   // desktop: stop 2 is one avenue further right
+    const stops = [[c1, rows[0]], [c2, rows[2]], [c1, rows[4]]];
+    const turns = [[c1, rows[0]], [c1, rows[1]], [c2, rows[1]], [c2, rows[2]], [c2, rows[3]], [c1, rows[3]], [c1, rows[4]]];
+    const r = 16;
+    let d = `M${turns[0][0]} ${turns[0][1]}`;
+    for (let i = 1; i < turns.length - 1; i++) {
+      const [px, py] = turns[i - 1], [x, y] = turns[i], [nx, ny] = turns[i + 1];
+      const inx = Math.sign(x - px), iny = Math.sign(y - py), outx = Math.sign(nx - x), outy = Math.sign(ny - y);
+      if (inx === outx && iny === outy) { d += ` L${x} ${y}`; continue; }   // straight through (a stop)
+      d += ` L${x - inx * r} ${y - iny * r} Q${x} ${y} ${x + outx * r} ${y + outy * r}`;
+    }
+    d += ` L${turns.at(-1)[0]} ${turns.at(-1)[1]}`;
+    [ahead, edge, line].forEach((p) => p.setAttribute("d", d));
+    len = line.getTotalLength();
+    stopAt = stops.map(([x, y]) => { let best = 0, bd = Infinity; for (let t = 0; t <= len; t += 3) { const p = line.getPointAtLength(t); const dd = (p.x - x) ** 2 + (p.y - y) ** 2; if (dd < bd) { bd = dd; best = t; } } return best; });
+    [edge, line].forEach((p) => { p.style.strokeDasharray = `${len} ${len}`; });
+
+    // pins on the corners, each place card to the right of its pin
+    stops.forEach(([x, y], i) => {
+      Object.assign(pins[i].style, { left: x + "px", top: y + "px" });
+      const card = places[i], left = x + 30, maxW = W - left - 14;
+      card.style.left = left + "px";
+      card.style.width = Math.min(maxW, phone ? maxW : 400) + "px";
+      card.style.top = y - card.offsetHeight / 2 + "px";
+    });
+    update();
+  }
+
+  // Draw the route as the map scrolls through the screen.
+  const wrap = document.getElementById("xp-scroll");
+  const stage = document.getElementById("xp-stage");
+  function update() {
+    // 0 when the title and map first pin, 1 once you've scrolled the extra distance
+    const w = wrap.getBoundingClientRect(), stick = parseFloat(getComputedStyle(stage).top) || 0;
+    let p = (stick - w.top) / (w.height - stage.offsetHeight);
+    p = reduce ? 1 : Math.max(0, Math.min(1, p));
+    const drawn = p * len;
+    [edge, line].forEach((path) => { path.style.strokeDashoffset = `${len - drawn}`; });
+    stopAt.forEach((at, i) => { const on = drawn >= at - 2; pins[i].classList.toggle("is-reached", on); places[i].classList.toggle("is-reached", on); });
+  }
+
+  addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+  addEventListener("resize", build);
+  document.fonts.ready.then(build);
+  addEventListener("load", build);
+  build();
+})();

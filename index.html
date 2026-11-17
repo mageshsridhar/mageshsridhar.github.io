@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=34">
+  <link rel="stylesheet" href="style.css?v=35">
   <script>
     // Set the theme before the page paints so there is no flash of the wrong colors
     (() => {
@@ -146,21 +146,42 @@
     </section>
 
     <section id="experience" class="section">
-      <h2>Experience</h2>
-      <ol class="timeline">
-        <li class="card">
-          <div class="logo"><img src="assets/salesforce.svg" alt="Salesforce"></div>
-          <div class="card-body"><h3>Member of Technical Staff, iOS</h3><p>Salesforce</p><p>Apr 2024 – Present</p></div>
-        </li>
-        <li class="card">
-          <div class="logo"><img src="assets/iqvia.svg" alt="IQVIA"></div>
-          <div class="card-body"><h3>Software Engineer II, iOS</h3><p>IQVIA</p><p>Jul 2021 – Apr 2024</p></div>
-        </li>
-        <li class="card">
-          <div class="logo"><img src="assets/asu.svg" alt="Arizona State University"></div>
-          <div class="card-body"><h3>Master's in Computer Science</h3><p>Arizona State University</p><p>GPA 3.79/4.00</p></div>
-        </li>
-      </ol>
+    <!-- the title and map stay pinned together while you scroll two extra screens;
+         the route draws over that distance -->
+    <div class="xp-scroll" id="xp-scroll">
+    <div class="xp-stage" id="xp-stage">
+    <h2>Experience</h2>
+    <div class="xp-map" id="xp-map">
+      <svg class="xp-streets" id="xp-streets" aria-hidden="true"></svg>
+      <svg class="xp-route" id="xp-route" aria-hidden="true"><path class="xp-ahead"/><path class="xp-edge"/><path class="xp-line"/></svg>
+
+      <div class="xp-directions">
+        <ul class="xp-legs">
+          <li><span class="xp-leg-dot xp-start"></span><span class="xp-muted">From</span>&nbsp;Arizona State University</li>
+          <li><span class="xp-leg-dot xp-end"></span><span class="xp-muted">To</span>&nbsp;Salesforce</li>
+        </ul>
+        <p class="xp-eta">5+ years<small>as an iOS developer</small></p>
+      </div>
+
+      <span class="xp-pin xp-start" data-stop="0">1</span>
+      <span class="xp-pin" data-stop="1">2</span>
+      <span class="xp-pin xp-here" data-stop="2">3</span>
+
+      <div class="xp-place" data-stop="0">
+        <span class="xp-logo"><img src="assets/asu-mark.svg" alt="Arizona State University"></span>
+        <div class="xp-place-text"><h3>Master's in Computer Science</h3><p class="xp-org">Arizona State University</p><p class="xp-when">GPA 3.79/4.00</p></div>
+      </div>
+      <div class="xp-place" data-stop="1">
+        <span class="xp-logo"><img src="assets/iqvia.svg" alt="IQVIA"></span>
+        <div class="xp-place-text"><h3>Software Engineer II, iOS</h3><p class="xp-org">IQVIA</p><p class="xp-when">Jul 2021 – Apr 2024</p></div>
+      </div>
+      <div class="xp-place" data-stop="2">
+        <span class="xp-logo"><img src="assets/salesforce.svg" alt="Salesforce"></span>
+        <div class="xp-place-text"><h3>Member of Technical Staff, iOS</h3><p class="xp-org">Salesforce</p><p class="xp-when">Apr 2024 – Present <span class="xp-tag">Now</span></p></div>
+      </div>
+    </div>
+    </div>
+    </div>
     </section>
 
     <section id="certifications" class="section">
@@ -243,6 +264,6 @@
     <p>© <span id="year"></span> Magesh Sridhar <span class="footer-sep" aria-hidden="true">·</span> <a class="made-with" href="https://claude.com/claude-code" target="_blank" rel="noopener">Built with <svg class="claude-mark" viewBox="0 0 12 8" shape-rendering="crispEdges" aria-hidden="true"><path fill="#D97757" d="M2 1h1v1h-1zM2 2h1v1h-1zM2 3h1v1h-1zM2 4h1v1h-1zM2 5h1v1h-1zM3 1h1v1h-1zM3 2h1v1h-1zM3 3h1v1h-1zM3 4h1v1h-1zM3 5h1v1h-1zM4 1h1v1h-1zM4 3h1v1h-1zM4 4h1v1h-1zM4 5h1v1h-1zM5 1h1v1h-1zM5 2h1v1h-1zM5 3h1v1h-1zM5 4h1v1h-1zM5 5h1v1h-1zM6 1h1v1h-1zM6 2h1v1h-1zM6 3h1v1h-1zM6 4h1v1h-1zM6 5h1v1h-1zM7 1h1v1h-1zM7 3h1v1h-1zM7 4h1v1h-1zM7 5h1v1h-1zM8 1h1v1h-1zM8 2h1v1h-1zM8 3h1v1h-1zM8 4h1v1h-1zM8 5h1v1h-1zM9 1h1v1h-1zM9 2h1v1h-1zM9 3h1v1h-1zM9 4h1v1h-1zM9 5h1v1h-1zM0 3h1v1h-1zM1 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM2 6h1v1h-1zM2 7h1v1h-1zM4 6h1v1h-1zM4 7h1v1h-1zM7 6h1v1h-1zM7 7h1v1h-1zM9 6h1v1h-1zM9 7h1v1h-1z"/></svg> Claude Code</a></p>
   </footer>
   <script src="components/animations-word.js?v=2"></script>
-  <script src="script.js?v=9"></script>
+  <script src="script.js?v=10"></script>
 </body>
 </html>
