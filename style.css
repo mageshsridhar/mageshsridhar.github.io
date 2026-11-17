@@ -467,12 +467,13 @@ a { color: inherit; }
 }
 .wire { position: absolute; top: 7px; left: 0; width: 100%; height: 38px; overflow: visible; }
 .wire path { fill: none; stroke: color-mix(in srgb, var(--text) 55%, transparent); stroke-width: 1.4; vector-effect: non-scaling-stroke; stroke-linecap: round; }
-.frame {
+/* (named cert-frame: plain "frame" is the phone/watch bezel image in the project cards) */
+.cert-frame {
   padding: 12px; border-radius: 4px;
   background: linear-gradient(145deg, #40372f, #211b17);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08), 0 2px 3px rgba(0, 0, 0, .2), 0 26px 44px -18px rgba(0, 0, 0, .5);
 }
-[data-theme="dark"] .frame { background: linear-gradient(145deg, #6a5a4d, #3b3028); }   /* lighter wood so it reads on the dark wall */
+[data-theme="dark"] .cert-frame { background: linear-gradient(145deg, #6a5a4d, #3b3028); }   /* lighter wood so it reads on the dark wall */
 .mat { padding: 16px; background: #f4f1ea; box-shadow: inset 0 1px 4px rgba(0, 0, 0, .25); }
 [data-theme="dark"] .mat { background: #d9d3c8; }
 
