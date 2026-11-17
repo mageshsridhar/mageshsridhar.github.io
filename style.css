@@ -358,15 +358,18 @@ a, button { -webkit-tap-highlight-color: transparent; }
   #projects { max-width: 1200px; }
   .track.bento {
     display: grid; overflow: visible; gap: 16px;
-    grid-template-columns: repeat(3, 1fr);
+    /* Six columns so the first row can split like the hero: Color Theory ends
+       where the hero photo ends (the hero is 1.1fr / 1fr with a 48px gap). The
+       middle pair is uneven, so every card below still gets an equal third. */
+    grid-template-columns: 1fr 1fr 1.061fr .939fr 1fr 1fr;
     grid-auto-rows: 250px;
     grid-template-areas:
-      "ct ct ly"
-      "ct ct ly"
-      "ht wa he"
-      "ht wa he"
-      "mf ds ds"
-      "mf ds ds";
+      "ct ct ct ly ly ly"
+      "ct ct ct ly ly ly"
+      "ht ht wa wa he he"
+      "ht ht wa wa he he"
+      "mf mf ds ds ds ds"
+      "mf mf ds ds ds ds";
   }
   .b-ct { grid-area: ct; } .b-ly { grid-area: ly; } .b-ht { grid-area: ht; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
@@ -418,7 +421,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .bento .slide h3 { font-size: 22px; line-height: 1.2; }
   .bento .slide p { font-size: 14.5px; max-width: 32ch; text-wrap: pretty; }
   .bento .gh { margin-top: 6px; min-height: 40px; padding: 8px 18px; font-size: 14px; }
-  .bento .badge { width: 120px; }
+  .bento .badge { width: 120px; margin-top: 12px; }   /* a little more air above the WWDC art */
 
   /* Phones peek up from the bottom edge of the card */
   .bento .device { transition: transform .35s ease; }
