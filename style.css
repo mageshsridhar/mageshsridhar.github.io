@@ -832,7 +832,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
     opacity: 0; transform: translateY(8px);
     transition: opacity .3s ease, transform .4s cubic-bezier(.2, .8, .2, 1);
   }
-  .b-ct .gh-hover { font-size: 30px; }
   .bento .gh-hover img { width: 1em; height: 1em; filter: invert(1); }   /* icon file is white */
   [data-theme="dark"] .bento .gh-hover img { filter: none; }
   .gh-arrow { display: inline-block; transition: transform .3s ease; }
