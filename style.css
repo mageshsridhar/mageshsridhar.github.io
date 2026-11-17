@@ -107,7 +107,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 
 /* Hero */
 /* bottom padding = a section's padding, so the gap into Projects matches the gaps between sections */
-.hero { max-width: 1200px; margin: 0 auto; padding: 16px 16px 72px; text-align: center; }
+.hero { max-width: 1200px; margin: 0 auto; padding: 16px 16px 48px; text-align: center; }
 .hero-photo {
   /* Full width on phones and iPad. The height is a share of the width so a wide
      frame still has room for the head; the hero script in script.js places the
@@ -184,7 +184,10 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .hero .btn-primary:hover { background: color-mix(in srgb, var(--shirt) 22%, var(--card)); filter: none; }
 
 /* Sections */
-.section { max-width: 1000px; margin: 0 auto; padding: 72px 16px; text-align: center; }
+/* Section rhythm: 48px above and below each section, so sections sit 96px apart
+   (36px from a title to its content); phones use 36px, i.e. 72px apart. The hero
+   and footer use the same values so every gap on the page matches. */
+.section { max-width: 1000px; margin: 0 auto; padding: 48px 16px; text-align: center; }
 /* Section titles: all caps, bold, evenly tracked (Inter at 700; capitals
    need wide letter-spacing to read cleanly at this size) */
 .section h2 {
@@ -580,7 +583,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 
 /* Contact */
 
-.footer { text-align: center; color: var(--muted); font-size: 13px; padding: 32px 16px 48px; }
+.footer { text-align: center; color: var(--muted); font-size: 13px; padding: 48px 16px 48px; }
 .footer-where { color: var(--text); font-size: 14px; font-weight: 500; margin-bottom: 6px; }
 .footer-time { font-variant-numeric: tabular-nums; }
 .made-with { color: inherit; text-decoration: none; white-space: nowrap; transition: color .2s; }
@@ -669,8 +672,9 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .nav nav a:nth-child(5) { --i: 4; }
   .hero-photo { height: min(40vh, calc((100vw - 32px) * 1.3)); border-radius: 30px; }   /* corner concentric with the menu button */
   .arrow { display: none; }
-  .section { padding: 56px 16px; }
-  .hero { padding-bottom: 56px; }
+  .section { padding: 36px 16px; }
+  .hero { padding-bottom: 36px; }
+  .footer { padding-top: 36px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
