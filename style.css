@@ -319,6 +319,36 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
 }
 
+/* iPad (tablet) carousel: lay each card out like its desktop bento card, so the
+   devices are the same size and cropped by the card's bottom edge at exactly
+   the same point. Text sits top-left; Color Theory and Dynamic Scroll put the
+   phone beside the text as on desktop. Cards are a little taller than desktop
+   because the "View on GitHub" button is shown here (no hover on a tablet). */
+@media (min-width: 601px) and (max-width: 899px) {
+  .track .slide {
+    height: 600px; padding: 28px 28px 0; gap: 0;
+    text-align: left; align-items: stretch;
+  }
+  .track .slide-text { align-items: flex-start; gap: 8px; }
+  .track .slide h3 { font-size: 22px; line-height: 1.2; }
+  .track .slide p { font-size: 14.5px; max-width: 32ch; text-wrap: pretty; }
+  .track .badge { width: 120px; }
+  .track .gh { margin-top: 14px; align-self: flex-start; }
+  /* same sizes and crops as desktop */
+  .track .phone { width: 228px; margin: auto auto -115px; }
+  .track .watch { width: auto; height: 400px; aspect-ratio: 600 / 940; flex: 0 1 auto; min-height: 0; margin: auto auto -49px; }
+  /* wide cards: text and button in the left column, phone on the right */
+  .track .b-ct, .track .b-ds {
+    display: grid; grid-template-columns: minmax(0, 1fr) 44%; grid-template-rows: auto 1fr; column-gap: 24px;
+  }
+  .track .b-ct .slide-text, .track .b-ds .slide-text { grid-column: 1; grid-row: 1; }
+  .track .b-ct .gh, .track .b-ds .gh { grid-column: 1; grid-row: 2; align-self: start; justify-self: start; }
+  .track .b-ct .phone, .track .b-ds .phone { grid-column: 2; grid-row: 1 / 3; align-self: end; justify-self: end; width: 100%; }
+  /* same crop as desktop, as a share of the phone's own width */
+  .track .b-ct .phone { max-width: 320px; margin-bottom: -53%; }
+  .track .b-ds .phone { max-width: 274px; margin-bottom: -27%; }
+}
+
 /* Desktop: bento grid of project cards instead of the carousel */
 @media (min-width: 900px) {
   #projects { max-width: 1200px; }
