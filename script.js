@@ -454,14 +454,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
   // Draw the route as the map scrolls through the screen.
   const wrap = document.getElementById("xp-scroll");
   const stage = document.getElementById("xp-stage");
-  const DRAW_SHARE = 0.5;   // share of the pinned scroll spent drawing (1 of 2 screens)
+  const DRAW_SHARE = 1 / 1.5;   // share of the pinned scroll spent drawing (1 of 1.5 screens)
   function update() {
     // 0 when the title and map first pin, 1 once you've scrolled the extra distance
     const w = wrap.getBoundingClientRect(), stick = parseFloat(getComputedStyle(stage).top) || 0;
     let p = (stick - w.top) / (w.height - stage.offsetHeight);
     p = reduce ? 1 : Math.max(0, Math.min(1, p));
-    // The route draws over the first screen of extra scroll; the second screen
-    // holds the finished route (all three stops) before the map unpins.
+    // The route draws over the first screen of extra scroll; the last half
+    // screen holds the finished route (all three stops) before the map unpins.
     const drawn = Math.min(1, p / DRAW_SHARE) * len;
     [edge, line].forEach((path) => { path.style.strokeDashoffset = `${len - drawn}`; });
     stopAt.forEach((at, i) => { const on = drawn >= at - 2; pins[i].classList.toggle("is-reached", on); places[i].classList.toggle("is-reached", on); });
