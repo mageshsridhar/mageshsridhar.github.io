@@ -425,7 +425,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .bento .slide:hover .device { transform: translateY(-8px); }
   /* phones peek up from the bottom edge; top of each device sits ~165px down,
      clear of the label + title + description */
-  .bento .phone { width: 228px; margin: auto auto -115px; }
+  .bento .phone { width: 228px; margin: auto auto -124px; }
 
   /* Wide cards: text on the left, device on the right */
   .bento .b-ct, .bento .b-ds { flex-direction: row; gap: 40px; }
@@ -451,7 +451,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   /* height-driven so it shrinks to whatever space the text leaves */
   .b-wa .watch {
     width: auto; height: 400px; aspect-ratio: 600 / 940;
-    flex: 0 1 auto; min-height: 0; margin: auto auto -49px; /* top lines up with the phones beside it; strap runs off the edge */
+    flex: 0 1 auto; min-height: 0; margin: auto auto -58px; /* top lines up with the phones beside it; strap runs off the edge */
   }
   .bento .b-wa:hover .watch { transform: scale(1.04); }
 
@@ -890,8 +890,11 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .made svg { height: 17.5px; width: auto; aspect-ratio: 432 / 512; flex-shrink: 0; }   /* brain icon (SVG Repo); filled, no negative margins so nothing gets clipped */
 .made.ai { color: #7c3aed; }
 [data-theme="dark"] .made.ai { color: #c4b5fd; }
-.slide-text .made + h3 { margin-top: -11px; }   /* sit the label close to its title */
-.bento .slide-text .made + h3 { margin-top: -3px; }
+/* The label sits as far above its title as the title sits above its
+   description (about 19px of clear space on desktop/iPad, 29px on phones,
+   where the text column has a larger gap). */
+.slide-text .made + h3 { margin-top: 0; }   /* phones */
+.bento .slide-text .made + h3 { margin-top: 6px; }   /* desktop (iPad has its own rule) */
 
 /* Hero entrance, once on page load, in two groups: the first four lines rise
    in together, then the last three (the wordmark among them). The wordmark's
