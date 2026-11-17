@@ -125,6 +125,21 @@ document.getElementById("year").textContent = new Date().getFullYear();
     [...dots.children].forEach((d, i) => d.setAttribute("aria-selected", i === current));
     // the active dot takes the colour of the card on screen
     dots.style.setProperty("--dot", getComputedStyle(slides[current]).getPropertyValue("--tint"));
+    warmNeighbours();
+  }
+
+  // In the carousel a demo only starts downloading once its card is on screen,
+  // so a freshly swiped-to card showed its still frame for a moment before the
+  // video began. Download the cards either side of the current one ahead of
+  // time, so the next video is ready when it slides in. Skipped on desktop
+  // (every card is visible there), with reduced motion, and in data-saver mode.
+  function warmNeighbours() {
+    if (!matchMedia("(max-width: 899px)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (navigator.connection && navigator.connection.saveData) return;
+    [current - 1, current + 1].forEach((i) => {
+      const v = slides[i] && slides[i].querySelector("video");
+      if (v && v.preload !== "auto") { v.preload = "auto"; v.load(); }
+    });
   }
 
   // The slide nearest the middle of the track
