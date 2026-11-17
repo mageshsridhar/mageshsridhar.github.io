@@ -131,11 +131,23 @@
     return kf[kf.length - 1][1];
   }
 
+  // A handle that sits exactly on its point (zero length) leaves the curve's
+  // direction at that end implied, and Safari on iOS then turns the square
+  // (butt) end of the thick t-arms slightly wrong, so a small wedge flickers at
+  // the fingertip during the wave. Giving such a handle a tiny length along the
+  // direction it implies (toward the other handle) keeps the shape identical and
+  // makes the end direction explicit.
+  const NUDGE = 0.04;
   function pathD({ v, i, o }) {
     let d = `M${v[0][0]} ${v[0][1]}`;
     for (let k = 1; k < v.length; k++) {
       const a = v[k - 1], b = v[k];
-      d += `C${a[0] + o[k - 1][0]} ${a[1] + o[k - 1][1]} ${b[0] + i[k][0]} ${b[1] + i[k][1]} ${b[0]} ${b[1]}`;
+      let c1 = [a[0] + o[k - 1][0], a[1] + o[k - 1][1]];
+      let c2 = [b[0] + i[k][0], b[1] + i[k][1]];
+      const zero1 = !o[k - 1][0] && !o[k - 1][1], zero2 = !i[k][0] && !i[k][1];
+      if (zero1) { const t = zero2 ? b : c2; c1 = [a[0] + (t[0] - a[0]) * NUDGE, a[1] + (t[1] - a[1]) * NUDGE]; }
+      if (zero2) { const t = zero1 ? a : c1; c2 = [b[0] + (t[0] - b[0]) * NUDGE, b[1] + (t[1] - b[1]) * NUDGE]; }
+      d += `C${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} ${b[0]} ${b[1]}`;
     }
     return d;
   }
