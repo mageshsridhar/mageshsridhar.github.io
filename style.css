@@ -321,7 +321,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 
 /* iPad (tablet) carousel: every card has the same layout. Text top-left, a
    compact "GitHub ↗" button pinned top-right, and the device centred, larger
-   than on desktop, with its top at the same height on every card (164px down,
+   than on desktop, with its top at the same height on every card (172px down,
    where the Dynamic Scroll phone sits) and running off the bottom edge. */
 @media (min-width: 601px) and (max-width: 899px) {
   .track .slide {
@@ -331,6 +331,10 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
   .track .slide-text { align-items: flex-start; gap: 8px; padding-right: 110px; }   /* clear of the button */
   .track .slide h3 { font-size: 24px; line-height: 1.2; }
+  /* label → title gap matches title → description: ~19px from the bottom of
+     the brain icon to the title's capitals, as from the title's baseline to
+     the description's capitals */
+  .track.bento .slide-text .made + h3 { margin-top: 6px; }   /* beats the desktop rule further down */
   .track .slide p { font-size: 15px; max-width: 36ch; text-wrap: pretty; }
   /* Color Theory's WWDC badge sits in the right gutter under the button, so its
      text block is no taller than the others' */
@@ -343,7 +347,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
   .track .gh-view { display: none; }
   /* devices centred, all starting at the same height */
-  .track .device { position: absolute; top: 164px; left: 50%; margin: 0; transform: translateX(-50%); }
+  .track .device { position: absolute; top: 172px; left: 50%; margin: 0; transform: translateX(-50%); }
   .track .phone { width: var(--pw); }
   .track .watch { width: auto; height: 480px; aspect-ratio: 600 / 940; }
 }
