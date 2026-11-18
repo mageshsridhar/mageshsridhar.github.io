@@ -221,6 +221,16 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .phone .screen { left: 5.2%; top: 2.4%; width: 89.6%; height: 95.2%; border-radius: 13% / 6%; }
 .watch { width: min(300px, 70vw); }
 .watch .screen { left: 14%; top: 21.5%; width: 72%; height: 56.5%; border-radius: 16%; }
+/* iPad: the recording is 3:4 and the screen a little taller, so the video is
+   fitted to the width from the top and the strip left below is filled with the
+   app's own background colour, rather than cropping the sides. */
+.ipad .screen {
+  /* a few pixels larger than the frame's screen opening on every side, so the
+     bezel's soft inner edge lands on the video and no light hairline shows
+     round a dark frame; the strip below the video is always off the card */
+  left: 5.2%; top: 3.9%; width: 89.6%; height: 92.2%; border-radius: 4.4% / 3.1%;
+  object-fit: contain; object-position: top; background: #000;
+}
 
 .arrow {
   position: absolute; top: 50%; z-index: 2;
@@ -292,6 +302,9 @@ a, button { -webkit-tap-highlight-color: transparent; }
   /* devices scale with the card; percentages here are of the card's width */
   .track .phone { width: min(250px, 84%); margin: 4px auto -46%; }
   .track .watch { width: min(250px, 84%); margin: 4px auto -14%; }
+  /* pinned to the bottom edge, low enough that the strip under the 3:4 video
+     (bottom ~16% of the iPad's width) runs off the card */
+  .track .ipad { width: min(320px, 100%); margin: auto auto -18%; }
   /* iPad arrows sit over the peeking cards, so give them a solid chip */
   .arrow { background: var(--card); box-shadow: 0 2px 10px rgba(0, 0, 0, .14); }
   .arrow:hover, [data-theme="dark"] .arrow { background: var(--card); }
@@ -347,6 +360,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .track .device { position: absolute; top: 172px; left: 50%; margin: 0; transform: translateX(-50%); }
   .track .phone { width: var(--pw); }
   .track .watch { width: auto; height: 480px; aspect-ratio: 600 / 940; }
+  .track .ipad { width: 380px; }   /* wide enough that the strip under the video falls below the card */
 }
 
 
@@ -363,6 +377,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
     grid-template-areas:
       "ct ct ct ly ly ly"
       "ct ct ct ly ly ly"
+      "tt tt tt tt tt tt"
+      "tt tt tt tt tt tt"
       "ht ht wa wa he he"
       "ht ht wa wa he he"
       "mf mf ds ds ds ds"
@@ -370,7 +386,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
   .b-ct { grid-area: ct; } .b-ly { grid-area: ly; } .b-ht { grid-area: ht; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
-  .b-mf { grid-area: mf; }
+  .b-mf { grid-area: mf; } .b-tt { grid-area: tt; }
 
   /* Each card sets --tint; the hover glow is a little softer in dark mode */
   .bento { --glow-peak: 34%; }
@@ -428,13 +444,27 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .bento .phone { width: 228px; margin: auto auto -124px; }
 
   /* Wide cards: text on the left, device on the right */
-  .bento .b-ct, .bento .b-ds { flex-direction: row; gap: 40px; }
-  .b-ct .slide-text, .b-ds .slide-text { flex: 1; padding-bottom: 28px; }
-  /* up to 320px, but never more than 44% of the card so the text keeps room */
-  .b-ct .phone {
-    --pw: min(320px, 44%);
-    width: var(--pw); flex-shrink: 0; align-self: flex-end;
-    margin: 0 24px calc(var(--pw) * -0.53) 0;
+  .bento .b-ct, .bento .b-ly, .bento .b-ds { flex-direction: row; gap: 40px; }
+  .b-ct .slide-text, .b-ly .slide-text, .b-ds .slide-text { flex: 1; min-width: 0; padding-bottom: 28px; }
+  /* First row: large phones beside the text, up to 300px but never more than
+     54% of the card. Each phone's top sits level with the label, like the
+     iPad below, and the rest runs off the bottom edge (the card clips it). */
+  .bento .b-ct, .bento .b-ly { gap: 32px; }
+  .b-ct .phone, .b-ly .phone {
+    width: min(300px, 54%); flex-shrink: 0; align-self: flex-start;
+    margin: 0 16px 0 0;
+  }
+  /* Narrower desktop windows (900–1199px): there isn't room for a phone big
+     enough to reach the bottom edge beside the text, so these two cards stack
+     like the others: text on top, a 228px phone below, running off the edge.
+     The WWDC21 badge moves up next to the label, as on iPad and phones. */
+  @media (max-width: 1199px) {
+    .bento .b-ct, .bento .b-ly { flex-direction: column; gap: 0; }
+    .b-ct .slide-text, .b-ly .slide-text { flex: none; padding-bottom: 0; }
+    .b-ct .phone, .b-ly .phone { width: 228px; align-self: center; margin: auto auto -124px; }
+    .track.bento .b-ct .slide-text { flex-flow: row wrap; align-items: center; gap: 8px 10px; }
+    .track.bento .b-ct .slide-text > :not(.made):not(.badge) { flex-basis: 100%; order: 2; }
+    .track.bento .b-ct .badge { order: 1; width: auto; height: 26px; margin: -4.5px 0; }
   }
   /* Dynamic Scroll: larger phone running off the bottom edge like the others,
      cropped just below its "Change Scroll Direction" button */
@@ -443,8 +473,18 @@ a, button { -webkit-tap-highlight-color: transparent; }
     width: var(--pw); flex-shrink: 0; align-self: flex-end;
     margin: 0 4px calc(var(--pw) * -0.27) 0;
   }
-  .b-ct h3 { font-size: 32px; }
-  .b-ct p { font-size: 16px; }
+  .b-ct h3, .b-ly h3, .b-tt h3 { font-size: 32px; }
+  .b-ct p, .b-ly p, .b-tt p { font-size: 16px; }
+  /* Tic-Tac-Toe: full-width row, iPad on the right at a fixed size (this card
+     is wide enough at every desktop width), its top level with the label and
+     only the strip under the 3:4 video running off the bottom edge, as on
+     iPad and phone */
+  .bento .b-tt { flex-direction: row; gap: 40px; }
+  .b-tt .slide-text { flex: 1; padding-bottom: 28px; }
+  .b-tt .ipad {
+    width: 400px; flex-shrink: 0; align-self: flex-end;
+    margin: 0 56px -76px 0;
+  }
 
   /* Watch card: tall, whole watch shown below the text */
   .bento .b-wa { padding-bottom: 0; } /* watch runs off the bottom edge, like the phones */
@@ -963,6 +1003,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
   .phone::before { background-image: url("assets/iphone-frame.webp"); }
   .watch::before { background-image: url("assets/watch-frame.webp"); }
+  .ipad::before { background-image: url("assets/ipad-frame.webp"); }
   .bento .slide:hover .device::before {
     filter: drop-shadow(0 28px 36px rgba(0, 0, 0, .22)) drop-shadow(0 6px 12px rgba(0, 0, 0, .10));
   }
@@ -993,8 +1034,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   color: var(--text);
 }
 .made svg { height: 17.5px; width: auto; aspect-ratio: 432 / 512; flex-shrink: 0; }   /* brain icon (SVG Repo); filled, no negative margins so nothing gets clipped */
-.made.ai { color: #7c3aed; }
-[data-theme="dark"] .made.ai { color: #c4b5fd; }
+.made.ai svg { aspect-ratio: 1; }   /* sparkles icon is square */
 /* The label sits as far above its title as the title sits above its
    description (about 19px of clear space on desktop and iPad, 23px on phones,
    where the type is a little larger). */
@@ -1043,3 +1083,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .hang { flex: 0 1 480px; width: auto; min-width: 0; display: flex; flex-direction: column; }   /* shrinks to fit on narrow desktops */
   .hang .cert-frame { flex: 1; }
 }
+
+/* Watch card: a stronger orange wash than the other cards' 12% tint */
+.track.bento .b-wa { background: color-mix(in srgb, var(--tint) 18%, var(--card)); }
