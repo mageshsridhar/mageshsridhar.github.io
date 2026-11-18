@@ -377,8 +377,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
     grid-template-areas:
       "ct ct ct ly ly ly"
       "ct ct ct ly ly ly"
-      "tt tt tt tt tt tt"
-      "tt tt tt tt tt tt"
+      "tt tt tt tt pk pk"
+      "tt tt tt tt pk pk"
       "ht ht wa wa he he"
       "ht ht wa wa he he"
       "mf mf ds ds ds ds"
@@ -386,7 +386,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
   .b-ct { grid-area: ct; } .b-ly { grid-area: ly; } .b-ht { grid-area: ht; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
-  .b-mf { grid-area: mf; } .b-tt { grid-area: tt; }
+  .b-mf { grid-area: mf; } .b-tt { grid-area: tt; } .b-pk { grid-area: pk; }
 
   /* Each card sets --tint; the hover glow is a little softer in dark mode */
   .bento { --glow-peak: 34%; }
@@ -475,15 +475,23 @@ a, button { -webkit-tap-highlight-color: transparent; }
   }
   .b-ct h3, .b-ly h3, .b-tt h3 { font-size: 32px; }
   .b-ct p, .b-ly p, .b-tt p { font-size: 16px; }
-  /* Tic-Tac-Toe: full-width row, iPad on the right at a fixed size (this card
-     is wide enough at every desktop width), its top level with the label and
-     only the strip under the 3:4 video running off the bottom edge, as on
-     iPad and phone */
-  .bento .b-tt { flex-direction: row; gap: 40px; }
-  .b-tt .slide-text { flex: 1; padding-bottom: 28px; }
+  /* Tic-Tac-Toe: two-thirds of its row (Picker Explorations takes the last
+     third), iPad on the right with only the strip under the 3:4 video running
+     off the bottom edge. The iPad keeps 400px where the card is wide enough
+     and gives the text at least 240px otherwise. */
+  .bento .b-tt { flex-direction: row; gap: 32px; }
+  .b-tt .slide-text { flex: 1; min-width: 240px; padding-bottom: 28px; }
   .b-tt .ipad {
-    width: 400px; flex-shrink: 0; align-self: flex-end;
-    margin: 0 56px -76px 0;
+    width: min(400px, 100% - 240px - 32px - 24px); flex-shrink: 0; align-self: flex-end;
+    margin: 0 24px -76px 0;
+  }
+  /* Narrower desktop windows (900–1199px): too tight for the iPad beside the
+     text, so stack like the first-row cards: text on top, iPad below running
+     off the bottom edge. */
+  @media (max-width: 1199px) {
+    .bento .b-tt { flex-direction: column; gap: 0; }
+    .b-tt .slide-text { flex: none; min-width: 0; padding-bottom: 0; }
+    .b-tt .ipad { width: min(380px, 100%); align-self: center; margin: 24px auto -300px; }
   }
 
   /* Watch card: tall, whole watch shown below the text */
