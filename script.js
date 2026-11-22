@@ -474,10 +474,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
   build();
 })();
 
-// Interests Dock icons. Most of the motion is CSS (style.css); this drives the
-// two parts that need geometry or randomness: the camera's shutter press and
-// aperture blades, and the tumbleweed's uneven hops. Everything runs only while
-// the Dock is on screen (it gets .is-live, which also un-pauses the CSS loops).
+// Interests Dock icons. Each sits still until hovered with a mouse (it loops
+// while hovered, then finishes its cycle) or tapped on a touch screen (one
+// cycle). The keyframes live in style.css as paused animations; this moves them
+// along, and draws the two parts that need geometry or randomness: the camera's
+// shutter press and aperture blades, and the tumbleweed's uneven hops.
 (() => {
   const dock = document.querySelector(".dock");
   if (!dock) return;
@@ -518,30 +519,63 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }
 
   // Tumbleweed: each bounce gets its own height and length, with the odd low
-  // skip, so the rhythm never repeats.
+  // skip, so the rhythm never repeats. Hops flatten out near the resting spot
+  // (the ends of the cycle), so it always starts and stops on the ground.
+  const ROLL = 4000;
   let hop = null;
-  function drawTumble(now) {
-    if (!hop || now >= hop.start + hop.dur) {
+  function drawTumble(t) {
+    if (!hop || t < hop.start || t >= hop.start + hop.dur) {
       const skip = Math.random() < 0.3;
-      const start = hop && now - (hop.start + hop.dur) < 100 ? hop.start + hop.dur : now;
+      const start = hop && t >= hop.start && t - (hop.start + hop.dur) < 100 ? hop.start + hop.dur : t;
       hop = { start, dur: skip ? 180 + Math.random() * 140 : 380 + Math.random() * 420, h: skip ? 0.6 + Math.random() * 1.2 : 2 + Math.random() * 4.5 };
     }
-    const p = (now - hop.start) / hop.dur;
-    tumble.setAttribute("transform", `translate(0 ${(-hop.h * 4 * p * (1 - p)).toFixed(2)})`);
+    const p = (t - hop.start) / hop.dur, at = t % ROLL;
+    const flat = Math.min(1, at / 350, (ROLL - at) / 350);
+    tumble.setAttribute("transform", `translate(0 ${(-hop.h * 4 * p * (1 - p) * flat).toFixed(2)})`);
   }
 
-  drawCamera(0);   // a still, open lens until (or unless) the loop runs
+  drawCamera(0);   // a still, open lens
   if (reduce) return;
 
-  let raf = 0, t0 = performance.now();
-  const frame = (now) => {
-    drawCamera(((now - t0) % PERIOD) / PERIOD);
-    drawTumble(now);
-    raf = requestAnimationFrame(frame);
+  // One cycle of each icon (ms), where in it to begin (skips the quiet lead-in,
+  // so the icon answers straight away), and anything drawn by hand.
+  const ICONS = {
+    "app-percussion": { period: 3000, lead: 200 },
+    "app-photography": { period: PERIOD, lead: PERIOD * 0.18, draw: (t) => drawCamera((t % PERIOD) / PERIOD) },
+    "app-design": { period: 3200 },
+    "app-parks": { period: ROLL, draw: drawTumble },
+    "app-sunsets": { period: 5000 },
   };
-  new IntersectionObserver(([entry]) => {
-    dock.classList.toggle("is-live", entry.isIntersecting);
-    cancelAnimationFrame(raf);
-    if (entry.isIntersecting) raf = requestAnimationFrame(frame);
-  }).observe(dock);
+  const EASE = 450;   // ms spent picking up speed and, on the last cycle, slowing to a stop
+
+  Object.entries(ICONS).forEach(([name, { period, lead = 0, draw }]) => {
+    const app = dock.querySelector("." + name);
+    let t = 0, from = 0, last = 0, raf = 0, hovered = false, touch = false;
+
+    function frame(now) {
+      const left = period - (t % period);
+      let rate = Math.min(1, 0.35 + (t - from) / EASE);
+      if (!hovered) rate = Math.min(rate, Math.max(0.12, Math.sqrt(left / EASE)));
+      const step = Math.min(100, now - last) * rate;
+      last = now;
+      const done = step >= left && !hovered;
+      t = done ? Math.round((t + left) / period) * period : t + step;   // land exactly on the resting frame
+      app.getAnimations({ subtree: true }).forEach((a) => {
+        if (a.animationName && a.animationName.startsWith("di-")) a.currentTime = t + lead;
+      });
+      if (draw) draw(t + lead);
+      raf = done ? 0 : requestAnimationFrame(frame);
+    }
+    function play() {
+      if (raf) return;   // already going: let it finish
+      from = t; last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+
+    // Decided per event, not per device, so an iPad with a trackpad gets hover.
+    app.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") { hovered = true; play(); } });
+    app.addEventListener("pointerleave", () => { hovered = false; });
+    app.addEventListener("pointerdown", (e) => { touch = e.pointerType !== "mouse"; });
+    app.addEventListener("click", () => { if (touch) play(); });   // a tap, not a scroll
+  });
 })();
