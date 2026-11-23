@@ -474,9 +474,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
   build();
 })();
 
-// Interests Dock icons. Each sits still until hovered with a mouse (it loops
-// while hovered, then finishes its cycle) or tapped on a touch screen (one
-// cycle). The keyframes live in style.css as paused animations; this moves them
+// Interests Dock icons. While the dock is on screen, the icons take turns, each
+// playing one cycle from left to right, on a loop. Hovering one with a mouse
+// also plays it (it loops while hovered, then finishes its cycle), and so does a
+// tap on a touch screen (one cycle); the turns wait for it to finish.
+// The keyframes live in style.css as paused animations; this moves them
 // along, and draws the two parts that need geometry or randomness: the camera's
 // shutter press and aperture blades, and the tumbleweed's uneven hops.
 (() => {
@@ -547,10 +549,12 @@ document.getElementById("year").textContent = new Date().getFullYear();
     "app-sunsets": { period: 5000 },
   };
   const EASE = 450;   // ms spent picking up speed and, on the last cycle, slowing to a stop
+  const GAP = 500;    // ms between one icon finishing its turn and the next starting
 
-  Object.entries(ICONS).forEach(([name, { period, lead = 0, draw }]) => {
+  const players = Object.entries(ICONS).map(([name, { period, lead = 0, draw }]) => {
     const app = dock.querySelector("." + name);
     let t = 0, from = 0, last = 0, raf = 0, hovered = false, touch = false;
+    let finished = [];   // promises waiting for the current cycle to end
 
     function frame(now) {
       const left = period - (t % period);
@@ -565,11 +569,16 @@ document.getElementById("year").textContent = new Date().getFullYear();
       });
       if (draw) draw(t + lead);
       raf = done ? 0 : requestAnimationFrame(frame);
+      if (done) { finished.forEach((resolve) => resolve()); finished = []; }
     }
+    // Resolves once the icon is back on its resting frame.
     function play() {
-      if (raf) return;   // already going: let it finish
-      from = t; last = performance.now();
-      raf = requestAnimationFrame(frame);
+      const end = new Promise((resolve) => finished.push(resolve));
+      if (!raf) {   // already going: let it finish
+        from = t; last = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+      return end;
     }
 
     // Decided per event, not per device, so an iPad with a trackpad gets hover.
@@ -577,5 +586,22 @@ document.getElementById("year").textContent = new Date().getFullYear();
     app.addEventListener("pointerleave", () => { hovered = false; });
     app.addEventListener("pointerdown", (e) => { touch = e.pointerType !== "mouse"; });
     app.addEventListener("click", () => { if (touch) play(); });   // a tap, not a scroll
+    return play;
   });
+
+  // Turns run only while the dock is on screen and the page is showing.
+  let onScreen = false, wake = null;
+  const ready = () => onScreen && !document.hidden;
+  const waitUntilReady = () => (ready() ? Promise.resolve() : new Promise((resolve) => { wake = resolve; }));
+  const check = () => { if (ready() && wake) { wake(); wake = null; } };
+  new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; check(); }, { threshold: 0.5 }).observe(dock);
+  document.addEventListener("visibilitychange", check);
+  const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  (async () => {
+    for (let i = 0; ; i = (i + 1) % players.length) {
+      await waitUntilReady();
+      await players[i]();
+      await pause(GAP);
+    }
+  })();
 })();
