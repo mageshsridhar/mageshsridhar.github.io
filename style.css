@@ -375,18 +375,18 @@ a, button { -webkit-tap-highlight-color: transparent; }
     grid-template-columns: 1fr 1fr 1.061fr .939fr 1fr 1fr;
     grid-auto-rows: 250px;
     grid-template-areas:
-      "ct ct ct ly ly ly"
-      "ct ct ct ly ly ly"
+      "ct ct ct ko ko ko"
+      "ct ct ct ko ko ko"
       "tt tt tt tt pk pk"
       "tt tt tt tt pk pk"
-      "ht ht wa wa he he"
-      "ht ht wa wa he he"
-      "mf mf ds ds ds ds"
-      "mf mf ds ds ds ds";
+      "ly ly wa wa he he"
+      "ly ly wa wa he he"
+      "ht ht ds ds ds ds"
+      "ht ht ds ds ds ds";
   }
   .b-ct { grid-area: ct; } .b-ly { grid-area: ly; } .b-ht { grid-area: ht; }
   .b-wa { grid-area: wa; } .b-he { grid-area: he; } .b-ds { grid-area: ds; }
-  .b-mf { grid-area: mf; } .b-tt { grid-area: tt; } .b-pk { grid-area: pk; }
+  .b-ko { grid-area: ko; } .b-tt { grid-area: tt; } .b-pk { grid-area: pk; }
 
   /* Each card sets --tint; the hover glow is a little softer in dark mode */
   .bento { --glow-peak: 34%; }
@@ -444,13 +444,13 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .bento .phone { width: 228px; margin: auto auto -124px; }
 
   /* Wide cards: text on the left, device on the right */
-  .bento .b-ct, .bento .b-ly, .bento .b-ds { flex-direction: row; gap: 40px; }
-  .b-ct .slide-text, .b-ly .slide-text, .b-ds .slide-text { flex: 1; min-width: 0; padding-bottom: 28px; }
+  .bento .b-ct, .bento .b-ko, .bento .b-ds { flex-direction: row; gap: 40px; }
+  .b-ct .slide-text, .b-ko .slide-text, .b-ds .slide-text { flex: 1; min-width: 0; padding-bottom: 28px; }
   /* First row: large phones beside the text, up to 300px but never more than
      54% of the card. Each phone's top sits level with the label, like the
      iPad below, and the rest runs off the bottom edge (the card clips it). */
-  .bento .b-ct, .bento .b-ly { gap: 32px; }
-  .b-ct .phone, .b-ly .phone {
+  .bento .b-ct, .bento .b-ko { gap: 32px; }
+  .b-ct .phone, .b-ko .phone {
     width: min(300px, 54%); flex-shrink: 0; align-self: flex-start;
     margin: 0 16px 0 0;
   }
@@ -459,9 +459,9 @@ a, button { -webkit-tap-highlight-color: transparent; }
      like the others: text on top, a 228px phone below, running off the edge.
      The WWDC21 badge moves up next to the label, as on iPad and phones. */
   @media (max-width: 1199px) {
-    .bento .b-ct, .bento .b-ly { flex-direction: column; gap: 0; }
-    .b-ct .slide-text, .b-ly .slide-text { flex: none; padding-bottom: 0; }
-    .b-ct .phone, .b-ly .phone { width: 228px; align-self: center; margin: auto auto -124px; }
+    .bento .b-ct, .bento .b-ko { flex-direction: column; gap: 0; }
+    .b-ct .slide-text, .b-ko .slide-text { flex: none; padding-bottom: 0; }
+    .b-ct .phone, .b-ko .phone { width: 228px; align-self: center; margin: auto auto -124px; }
     .track.bento .b-ct .slide-text { flex-flow: row wrap; align-items: center; gap: 8px 10px; }
     .track.bento .b-ct .slide-text > :not(.made):not(.badge) { flex-basis: 100%; order: 2; }
     .track.bento .b-ct .badge { order: 1; width: auto; height: 26px; margin: -4.5px 0; }
@@ -473,8 +473,8 @@ a, button { -webkit-tap-highlight-color: transparent; }
     width: var(--pw); flex-shrink: 0; align-self: flex-end;
     margin: 0 4px calc(var(--pw) * -0.27) 0;
   }
-  .b-ct h3, .b-ly h3, .b-tt h3 { font-size: 32px; }
-  .b-ct p, .b-ly p, .b-tt p { font-size: 16px; }
+  .b-ct h3, .b-ko h3, .b-tt h3 { font-size: 32px; }
+  .b-ct p, .b-ko p, .b-tt p { font-size: 16px; }
   /* Tic-Tac-Toe: two-thirds of its row (Picker Explorations takes the last
      third), iPad on the right with only the strip under the 3:4 video running
      off the bottom edge. The iPad keeps 400px where the card is wide enough
