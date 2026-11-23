@@ -138,7 +138,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (navigator.connection && navigator.connection.saveData) return;
     [current - 1, current + 1].forEach((i) => {
       const v = slides[i] && slides[i].querySelector("video");
-      if (v && v.preload !== "auto") { v.preload = "auto"; v.load(); }
+      if (!v || v.preload === "auto") return;
+      v.preload = "auto";
+      // load() restarts a video, so only nudge one that hasn't started loading:
+      // calling it on a playing demo reset it to a blank, paused frame.
+      if (v.readyState === 0 && v.paused && v.networkState !== HTMLMediaElement.NETWORK_LOADING) v.load();
     });
   }
 
@@ -218,14 +222,28 @@ document.getElementById("year").textContent = new Date().getFullYear();
 // and pauses when it scrolls away. With reduced motion, the poster frame stays.
 (() => {
   const videos = document.querySelectorAll("video.screen");
+  // The poster also sits behind each video. Browsers can drop the poster once
+  // playback is asked for, before the first frame is ready, which left the
+  // phone frame empty for a moment.
+  videos.forEach((v) => {
+    const poster = v.getAttribute("poster");
+    if (poster) v.style.background = `url("${poster}") center / cover no-repeat`;
+  });
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const onScreen = new WeakSet();
+  const play = (v) => v.play().catch(() => {});   // e.g. Low Power Mode: poster stays
   const io = new IntersectionObserver((entries) => {
     entries.forEach(({ target, isIntersecting }) => {
-      if (isIntersecting) target.play().catch(() => {});   // e.g. Low Power Mode: poster stays
-      else target.pause();
+      if (isIntersecting) { onScreen.add(target); play(target); }
+      else { onScreen.delete(target); target.pause(); }
     });
   }, { rootMargin: "200px" });
-  videos.forEach((v) => io.observe(v));
+  videos.forEach((v) => {
+    io.observe(v);
+    // If a demo on screen ends up paused once it can play (say it was reloaded),
+    // start it again.
+    v.addEventListener("canplay", () => { if (onScreen.has(v) && v.paused) play(v); });
+  });
 })();
 
 // Phone menu: the floating button grows into a panel with the avatar, theme
