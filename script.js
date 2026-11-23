@@ -222,12 +222,19 @@ document.getElementById("year").textContent = new Date().getFullYear();
 // and pauses when it scrolls away. With reduced motion, the poster frame stays.
 (() => {
   const videos = document.querySelectorAll("video.screen");
-  // The poster also sits behind each video. Browsers can drop the poster once
-  // playback is asked for, before the first frame is ready, which left the
-  // phone frame empty for a moment.
+  // A copy of each poster sits behind its video as an image. Safari stops
+  // drawing a video's poster once playback is asked for, before the first frame
+  // is ready (and draws no CSS background there either), which left the phone
+  // frame empty for a moment.
   videos.forEach((v) => {
     const poster = v.getAttribute("poster");
-    if (poster) v.style.background = `url("${poster}") center / cover no-repeat`;
+    if (!poster) return;
+    const still = document.createElement("img");
+    still.className = "screen";
+    still.src = poster;
+    still.alt = "";
+    still.setAttribute("aria-hidden", "true");
+    v.before(still);
   });
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const onScreen = new WeakSet();
